@@ -1,0 +1,11 @@
+numpy
+sklearn
+pandas==0.24.2
+numba
+hickle
+xgboost
+matplotlib
+IPython
+mahotas
+capstone
+chainerrl

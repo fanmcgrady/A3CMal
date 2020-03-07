@@ -1,0 +1,1 @@
+{"processes": 1, "env": "CartPole-v0", "arch": "FFSoftmax", "seed": 0, "outdir": "results", "t_max": 5, "beta": 0.01, "profile": false, "steps": 80000000, "eval_interval": 100000, "eval_n_runs": 10, "reward_scale_factor": 0.01, "rmsprop_epsilon": 0.1, "render": false, "lr": 0.0007, "weight_decay": 0.0, "demo": false, "load": "", "logger_level": 10, "monitor": false}
