@@ -3,8 +3,8 @@ import traceback
 
 import numpy
 
-sys.path.append('../')
-from novel_feature.feature_extraction import *
+sys.path.append('../novel_feature')
+from feature_extraction import *
 
 directory_name = os.path.join('../../Dataset', 'train') + '/'
 files = os.listdir(directory_name)
