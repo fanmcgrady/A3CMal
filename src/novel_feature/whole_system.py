@@ -2,7 +2,7 @@ import os
 import sys
 from multiprocessing import Pool, Process
 
-from asm_extraction_facade import asm_extraction
+# from asm_extraction_facade import asm_extraction
 from byte_code_extraction_facade import byte_extraction
 from classification_facade import classification
 from feature_selection_facade import feature_fusion
@@ -14,9 +14,9 @@ def byte_code_worker(datasets):
     byte_pool.map(byte_extraction, datasets)
 
 
-def asm_code_worker(datasets):
-    byte_pool = Pool(2)
-    byte_pool.map(asm_extraction, datasets)
+# def asm_code_worker(datasets):
+#     byte_pool = Pool(2)
+#     byte_pool.map(asm_extraction, datasets)
 
 
 def main(choice):
