@@ -33,7 +33,7 @@ if __name__ == '__main__':
         fold_list = os.listdir(pe)
         for i, fold in enumerate(fold_list):
             files = os.listdir(os.path.join(pe, fold))
-            for f in files:
+            for j, f in enumerate(files):
                 csv.write('"{}",{}\n'.format(f, i))
-
                 generate_bytes(os.path.join(os.path.join(pe, fold), f), train)
+                print("{}: processing {}".format(j, f))
