@@ -74,7 +74,7 @@ def byte_extraction(dataset_type):
     # Creating row set
     rows = []
     for t, fname in enumerate(byte_files):
-        with open(directory_name + fname, 'r') as f:
+        with open(directory_name + '/' + fname, 'r') as f:
             # One Gram
             start_time = time.time()
             oneg = byte_1gram(f)
