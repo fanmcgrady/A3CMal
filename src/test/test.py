@@ -15,6 +15,8 @@ for t, fname in enumerate(byte_files):
     with open(directory_name + fname, 'r') as f:
         try:
             entropy = byte_entropy(f)
+            if (t + 1) % 100 == 0:
+                print("processing", t)
         except Exception as err:
             print(err, traceback.print_exc())
             print("Error", fname)
