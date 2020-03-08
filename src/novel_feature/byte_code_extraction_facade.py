@@ -7,8 +7,8 @@ from feature_extraction import *
 from header_construction import *
 from settings import *
 
-path = DATASET_PATH
-os.chdir(path)
+# path = DATASET_PATH
+# os.chdir(path)
 
 
 # Hex dump-based features

@@ -1,18 +1,20 @@
+import sys
+sys.path.append("../../../")
+
+import traceback
 from generate_feature import GenerateFeature
 from novel_feature.byte_code_extraction_facade import *
-import traceback
-import xgboost as xgb
+
 
 class GenerateNovelFeature(GenerateFeature):
     def __init__(self, path):
         super().__init__(path)
-        print(os.getcwd())
 
-    def get_features(self, file_name):
+    def get_features(self):
 
         # byte_entropy+byte_oneg+byte_str_lengths+byte_meta_data+byte_img1
 
-        with open(file_name, 'r') as f:
+        with open(self.bytes_path, 'r') as f:
             feature = []
             try:
                 start_time = time.time()
@@ -33,7 +35,7 @@ class GenerateNovelFeature(GenerateFeature):
                 f.seek(0)
 
                 # Meta data特征
-                meta_data = byte_meta_data(self.sample_path + file_name, f)
+                meta_data = byte_meta_data(self.bytes_path, f)
                 feature.extend(meta_data)
                 f.seek(0)
 
@@ -48,9 +50,6 @@ class GenerateNovelFeature(GenerateFeature):
 
             except Exception as err:
                 print(err, traceback.print_exc())
-                print("Error", file_name)
+                print("Error", self.bytes_path)
 
-
-        extracted_feature = xgb.DMatrix(data=feature)
-
-        return feature
+        return np.array([feature])

@@ -1,7 +1,7 @@
 from handle_io import io
 
 # This folder should contain 2 folders, namely train_gz and test_gz, containing gzip of samples
-DATASET_PATH = io.get_current_directory()[0:io.get_current_directory().rindex('/')] + '/../Dataset/'
+DATASET_PATH = io.get_current_directory()[0:io.get_current_directory().rindex('\\')] + '/../Dataset/'
 
 SAVED_PATH_CSV = DATASET_PATH + 'FeatureCategories/'
 TRAIN_ID_PATH = DATASET_PATH +'trainLabels.csv'
