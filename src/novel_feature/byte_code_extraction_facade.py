@@ -13,7 +13,7 @@ from settings import *
 
 # Hex dump-based features
 def byte_extraction(dataset_type):
-    directory_name = dataset_type + '/samples/'
+    directory_name = os.path.join(DATASET_PATH, dataset_type)
     files = os.listdir(directory_name)
     files = numpy.sort(files)
     byte_files = [i for i in files if i.endswith('.bytes')]
@@ -25,7 +25,7 @@ def byte_extraction(dataset_type):
     oneg_csv = open(SAVED_PATH_CSV + dataset_type + '/byte_oneg.csv', 'w')
     m_data_csv = open(SAVED_PATH_CSV + dataset_type + '/byte_meta_data.csv', 'w')
     img1_csv = open(SAVED_PATH_CSV + dataset_type + '/byte_img1.csv', 'w')
-    img2_csv = open(SAVED_PATH_CSV + dataset_type + '/byte_img2.csv', 'w')
+    # img2_csv = open(SAVED_PATH_CSV + dataset_type + '/byte_img2.csv', 'w')
     entropy_csv = open(SAVED_PATH_CSV + dataset_type + '/byte_entropy.csv', 'w')
     str_lengths_csv = open(SAVED_PATH_CSV + dataset_type + '/byte_str_lengths.csv', 'w')
 
@@ -33,7 +33,7 @@ def byte_extraction(dataset_type):
     twog_time = []
     m_data_time = []
     img1_time = []
-    img2_time = []
+    # img2_time = []
     entropy_time = []
     str_lengths_time = []
 
@@ -46,7 +46,7 @@ def byte_extraction(dataset_type):
     # colnames += header_byte_2grams()
     colnames += header_byte_meta_data()
     colnames += header_byte_img1()
-    colnames += header_byte_img2()
+    # colnames += header_byte_img2()
     colnames += header_byte_entropy()
     colnames += header_byte_str_len()
     # fw.writerow(colnames)
@@ -54,7 +54,7 @@ def byte_extraction(dataset_type):
     meta_data_colnames = header_byte_meta_data()
     onegram_colnames = header_byte_1gram()
     img1_colnames = header_byte_img1()
-    img2_colnames = header_byte_img2()
+    # img2_colnames = header_byte_img2()
     entropy_colnames = header_byte_entropy()
     str_len_colnames = header_byte_str_len()
 
@@ -64,8 +64,8 @@ def byte_extraction(dataset_type):
     oneg_csv_w.writerows([onegram_colnames])
     img1_csv_w = writer(img1_csv)
     img1_csv_w.writerows([img1_colnames])
-    img2_csv_w = writer(img2_csv)
-    img2_csv_w.writerows([img2_colnames])
+    # img2_csv_w = writer(img2_csv)
+    # img2_csv_w.writerows([img2_colnames])
     entropy_csv_w = writer(entropy_csv)
     entropy_csv_w.writerows([entropy_colnames])
     str_lengths_csv_w = writer(str_lengths_csv)
@@ -111,13 +111,13 @@ def byte_extraction(dataset_type):
             f.seek(0)
 
             # Images 2
-            start_time = time.time()
-            # image2 = byte_image2(f)
-            required_time = time.time() - start_time
-            img2_time.append(required_time)
-            # img2_csv_w.writerows([image2])
-
-            f.seek(0)
+            # start_time = time.time()
+            # # image2 = byte_image2(f)
+            # required_time = time.time() - start_time
+            # img2_time.append(required_time)
+            # # img2_csv_w.writerows([image2])
+            #
+            # f.seek(0)
 
             # Entropy
             start_time = time.time()
@@ -154,11 +154,11 @@ def byte_extraction(dataset_type):
     twog_time_str = ', '.join(str(x) for x in twog_time)
     m_data_time_str = ', '.join(str(x) for x in m_data_time)
     img1_time_str = ', '.join(str(x) for x in img1_time)
-    img2_time_str = ', '.join(str(x) for x in img2_time)
+    # img2_time_str = ', '.join(str(x) for x in img2_time)
     ent_time_str = ', '.join(str(x) for x in entropy_time)
     str_lengths_time_str = ', '.join(str(x) for x in str_lengths_time)
     io.save_txt(('one_gram_' + dataset_type, oneg_time_str, 'two_gram_' + dataset_type, twog_time_str,
                  'bc_meta_data_' + dataset_type, m_data_time_str, 'img1_' + dataset_type, img1_time_str,
-                 'img2_' + dataset_type, img2_time_str, 'ent_' + dataset_type, ent_time_str,
+                 'ent_' + dataset_type, ent_time_str,
                  'str_len_' + dataset_type, str_lengths_time_str,
                  ), BYTE_TIME_PATH)

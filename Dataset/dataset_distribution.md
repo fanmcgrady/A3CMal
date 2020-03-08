@@ -19,4 +19,14 @@
 |worm1|1693|
 |worm2|1592|
 
-
+| Family Name | Samples |
+| ----------- | ------- |
+|backdoor|5727|
+|dos|212|
+|email|3506|
+|exploit|994|
+|net-worm|4684|
+|rootkit|3180|
+|trojan|5678|
+|virus|2900|
+|worm|3285|

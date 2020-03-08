@@ -32,11 +32,11 @@ def main(choice):
                 os.makedirs(SAVED_PATH_CSV + dataset)
 
         p1 = Process(target=byte_code_worker, args=(datasets,))
-        p2 = Process(target=asm_code_worker, args=(datasets,))
+        # p2 = Process(target=asm_code_worker, args=(datasets,))
         p1.start()
-        p2.start()
+        # p2.start()
         p1.join()
-        p2.join()
+        # p2.join()
 
     elif step == 'feature fusion':
         print('Feature Fusion STEP')
