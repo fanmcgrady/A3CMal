@@ -1,19 +1,21 @@
-import binascii
-import os
+import sys
+import traceback
 
-list = []
-line = []
-with open('java.exe', 'rb') as cur_file:
-    size = os.path.getsize('java.exe')  # 获得文件大小
-    for i in range(size):
-        data = cur_file.read(1)  # 每次输出一个字节
-        hex_string = str.upper(binascii.b2a_hex(data).decode('ascii'))
-        line.append(hex_string)
+import numpy
 
-        if (i + 1) % 16 == 0:
-            list.append("00000000 {}".format(" ".join(line)))
-            line = []
-print('\n'.join(list))
+sys.path.append('../')
+from novel_feature.settings import *
+from novel_feature.feature_extraction import *
 
-# with open('java.bytes', 'w') as out:
-#     out.write('\n'.join(list))
+directory_name = os.path.join(DATASET_PATH, 'train') + '/'
+files = os.listdir(directory_name)
+files = numpy.sort(files)
+byte_files = [i for i in files if i.endswith('.bytes')]
+
+for t, fname in enumerate(byte_files):
+    with open(directory_name + fname, 'r') as f:
+        try:
+            entropy = byte_entropy(f)
+        except Exception as err:
+            print(err, traceback.print_exc())
+            print("Error", fname)
