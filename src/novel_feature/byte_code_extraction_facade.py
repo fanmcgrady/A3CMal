@@ -13,7 +13,7 @@ from settings import *
 
 # Hex dump-based features
 def byte_extraction(dataset_type):
-    directory_name = os.path.join(DATASET_PATH, dataset_type)
+    directory_name = os.path.join(DATASET_PATH, dataset_type) + '/'
     files = os.listdir(directory_name)
     files = numpy.sort(files)
     byte_files = [i for i in files if i.endswith('.bytes')]
@@ -74,7 +74,7 @@ def byte_extraction(dataset_type):
     # Creating row set
     rows = []
     for t, fname in enumerate(byte_files):
-        with open(directory_name + '/' + fname, 'r') as f:
+        with open(directory_name + fname, 'r') as f:
             # One Gram
             start_time = time.time()
             oneg = byte_1gram(f)
