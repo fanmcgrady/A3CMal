@@ -4,10 +4,9 @@ import traceback
 import numpy
 
 sys.path.append('../')
-from novel_feature.settings import *
 from novel_feature.feature_extraction import *
 
-directory_name = os.path.join(DATASET_PATH, 'train') + '/'
+directory_name = os.path.join('../../Dataset', 'train') + '/'
 files = os.listdir(directory_name)
 files = numpy.sort(files)
 byte_files = [i for i in files if i.endswith('.bytes')]
