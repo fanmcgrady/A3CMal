@@ -21,12 +21,12 @@
 
 | Family Name | Samples |
 | ----------- | ------- |
-|backdoor|5727|
-|dos|212|
-|email|3506|
-|exploit|994|
-|net-worm|4684|
-|rootkit|3180|
-|trojan|5678|
-|virus|2900|
-|worm|3285|
+|backdoor|5726|
+|dos|204|
+|email|3176|
+|exploit|744|
+|net-worm|4534|
+|rootkit|2680|
+|trojan|5677|
+|virus|2659|
+|worm|3264|
