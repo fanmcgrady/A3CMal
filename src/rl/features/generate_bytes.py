@@ -34,6 +34,6 @@ if __name__ == '__main__':
         for i, fold in enumerate(fold_list):
             files = os.listdir(os.path.join(pe, fold))
             for j, f in enumerate(files):
-                csv.write('"{}",{}\n'.format(f, i))
+                csv.write('"{}",{}\n'.format(f, i + 1))
                 generate_bytes(os.path.join(os.path.join(pe, fold), f), train)
-                print("{}: processing {}".format(j, f))
+                print("{}: processing {} of family {}({}%)".format(j + 1, f, fold, (j+1)/len(files)))
