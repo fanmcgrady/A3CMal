@@ -9,3 +9,4 @@ IPython
 mahotas
 capstone
 chainerrl
+lief
