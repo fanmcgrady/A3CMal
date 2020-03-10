@@ -1,7 +1,7 @@
 import lief
 import sys
 sys.path.append('../rl/')
-from controls.manipulate2 import MalwareManipulator
+from action.action import MalwareManipulator
 
 pe = '../../Dataset/pe/backdoor/Backdoor.Win32.Rbot.pzu'
 binary = lief.PE.parse(pe)
