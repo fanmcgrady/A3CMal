@@ -2,8 +2,7 @@ import pickle
 
 import xgboost as xgb
 
-from features.generate_novel import *
-from features.generate_winner import *
+from generate_novel import *
 
 '''
 预测

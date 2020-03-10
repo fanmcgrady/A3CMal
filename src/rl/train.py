@@ -15,11 +15,12 @@ import numpy as np
 from chainer import optimizers
 from chainerrl import experiments, explorers, replay_buffer, misc
 
-from gym_malware import sha256_holdout, MAXTURNS
-from gym_malware.envs.controls import manipulate2 as manipulate
-from gym_malware.envs.utils import pefeatures, interface
-from hook.plot_hook import PlotHook
-from my_rl import my_train
+from env import sha256_holdout, MAXTURNS
+from controls import manipulate2 as manipulate
+from env import pefeatures
+from tools import interface
+from plot_hook import PlotHook
+import my_train
 
 ACTION_LOOKUP = {i: act for i, act in enumerate(manipulate.ACTION_TABLE.keys())}
 

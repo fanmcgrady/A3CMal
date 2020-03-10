@@ -27,7 +27,6 @@ COMMON_SECTION_NAMES = open(os.path.join(
 COMMON_IMPORTS = json.load(
     open(os.path.join(module_path, 'small_dll_imports.json'), 'r'))
 
-from gym_malware.envs.utils import interface, pefeatures
 ######################
 # explicitly list so that these may be used externally
 ACTION_TABLE = {

@@ -7,7 +7,7 @@ import numpy as np
 import visdom
 from chainerrl.experiments import StepHook
 
-
+# visdom是图形库
 class PlotHook(StepHook):
     """Hook that will plot the agent statistics.
 

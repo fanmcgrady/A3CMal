@@ -10,7 +10,7 @@ import logging
 import os
 
 # from chainerrl.experiments.evaluator import Evaluator
-from my_rl import my_evaluator
+import my_evaluator
 from chainerrl.experiments.evaluator import save_agent
 from chainerrl.misc.ask_yes_no import ask_yes_no
 from chainerrl.misc.makedirs import makedirs
