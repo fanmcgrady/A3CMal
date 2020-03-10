@@ -1,19 +1,17 @@
-import lief
-import sys
-sys.path.append('../rl/')
-from action.action import MalwareManipulator
+import glob
+import os
 
-pe = '../../Dataset/pe/backdoor/Backdoor.Win32.Rbot.pzu'
-binary = lief.PE.parse(pe)
+import numpy as np
 
-def test_overlay_append():
-    with open(pe, 'rb') as f:
-        bytez = f.read()
-    bytez2 = MalwareManipulator(pe).ARBE()
-    if len(bytez) == len(bytez2):
-        return 0
-    else:
-        return 1
+pe = '../../Dataset/train'
 
-if __name__ == '__main__':
-    print(test_overlay_append())
+files = glob.glob(pe)
+
+length = []
+for fp in glob.glob(os.path.join(pe, '*.bytes')):
+    with open(fp, 'r') as f:
+        length.append(len(f.readlines()))
+
+print(min(length))
+print(max(length))
+print(np.mean(length))
