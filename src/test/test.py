@@ -14,3 +14,6 @@ def test_overlay_append():
         return 0
     else:
         return 1
+
+if __name__ == '__main__':
+    print(test_overlay_append())
