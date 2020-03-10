@@ -5,12 +5,12 @@ import numpy as np
 
 pe = '../../Dataset/train'
 
-files = glob.glob(pe)
-
 length = []
-for fp in glob.glob(os.path.join(pe, '*.bytes')):
+files = glob.glob(os.path.join(pe, '*.bytes'))
+for i, fp in enumerate(files):
     with open(fp, 'r') as f:
         length.append(len(f.readlines()))
+    print("progress {}".format((i + 1)/len(files)))
 
 print(min(length))
 print(max(length))
