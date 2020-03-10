@@ -15,6 +15,9 @@ def generate_bytes(file_name, saved_path):
             hex_string = str.upper(binascii.b2a_hex(data).decode('ascii'))
             line.append(hex_string)
 
+            if i < 160:
+                continue
+
             if (i + 1) % 16 == 0:
                 # address = generate_address(count)
                 list.append("00000000 {}".format(" ".join(line)))

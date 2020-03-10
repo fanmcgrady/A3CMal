@@ -26,7 +26,7 @@ def byte_extraction(dataset_type):
     m_data_csv = open(SAVED_PATH_CSV + dataset_type + '/byte_meta_data.csv', 'w')
     img1_csv = open(SAVED_PATH_CSV + dataset_type + '/byte_img1.csv', 'w')
     # img2_csv = open(SAVED_PATH_CSV + dataset_type + '/byte_img2.csv', 'w')
-    entropy_csv = open(SAVED_PATH_CSV + dataset_type + '/byte_entropy.csv', 'w')
+#entropy_csv = open(SAVED_PATH_CSV + dataset_type + '/byte_entropy.csv', 'w')
     str_lengths_csv = open(SAVED_PATH_CSV + dataset_type + '/byte_str_lengths.csv', 'w')
 
     oneg_time = []
@@ -34,7 +34,7 @@ def byte_extraction(dataset_type):
     m_data_time = []
     img1_time = []
     # img2_time = []
-    entropy_time = []
+#   entropy_time = []
     str_lengths_time = []
 
     # with gzip.open(byte_csv, 'w') as f:
@@ -47,7 +47,7 @@ def byte_extraction(dataset_type):
     colnames += header_byte_meta_data()
     colnames += header_byte_img1()
     # colnames += header_byte_img2()
-    colnames += header_byte_entropy()
+#   colnames += header_byte_entropy()
     colnames += header_byte_str_len()
     # fw.writerow(colnames)
 
@@ -55,7 +55,7 @@ def byte_extraction(dataset_type):
     onegram_colnames = header_byte_1gram()
     img1_colnames = header_byte_img1()
     # img2_colnames = header_byte_img2()
-    entropy_colnames = header_byte_entropy()
+#   entropy_colnames = header_byte_entropy()
     str_len_colnames = header_byte_str_len()
 
     m_data_csv_w = writer(m_data_csv)
@@ -66,8 +66,8 @@ def byte_extraction(dataset_type):
     img1_csv_w.writerows([img1_colnames])
     # img2_csv_w = writer(img2_csv)
     # img2_csv_w.writerows([img2_colnames])
-    entropy_csv_w = writer(entropy_csv)
-    entropy_csv_w.writerows([entropy_colnames])
+#   entropy_csv_w = writer(entropy_csv)
+#   entropy_csv_w.writerows([entropy_colnames])
     str_lengths_csv_w = writer(str_lengths_csv)
     str_lengths_csv_w.writerows([str_len_colnames])
 
@@ -120,13 +120,13 @@ def byte_extraction(dataset_type):
             # f.seek(0)
 
             # Entropy
-            start_time = time.time()
-            entropy = byte_entropy(f)
-            required_time = time.time() - start_time
-            entropy_time.append(required_time)
-            entropy_csv_w.writerows([entropy])
+#           start_time = time.time()
+#           entropy = byte_entropy(f)
+#           required_time = time.time() - start_time
+#           entropy_time.append(required_time)
+#           entropy_csv_w.writerows([entropy])
 
-            f.seek(0)
+#           f.seek(0)
 
             # Strings
             start_time = time.time()
@@ -150,15 +150,15 @@ def byte_extraction(dataset_type):
             #     break
 
     # Save the time
-    oneg_time_str = ', '.join(str(x) for x in oneg_time)
-    twog_time_str = ', '.join(str(x) for x in twog_time)
-    m_data_time_str = ', '.join(str(x) for x in m_data_time)
-    img1_time_str = ', '.join(str(x) for x in img1_time)
+#   oneg_time_str = ', '.join(str(x) for x in oneg_time)
+#   twog_time_str = ', '.join(str(x) for x in twog_time)
+#   m_data_time_str = ', '.join(str(x) for x in m_data_time)
+#   img1_time_str = ', '.join(str(x) for x in img1_time)
     # img2_time_str = ', '.join(str(x) for x in img2_time)
-    ent_time_str = ', '.join(str(x) for x in entropy_time)
-    str_lengths_time_str = ', '.join(str(x) for x in str_lengths_time)
-    io.save_txt(('one_gram_' + dataset_type, oneg_time_str, 'two_gram_' + dataset_type, twog_time_str,
-                 'bc_meta_data_' + dataset_type, m_data_time_str, 'img1_' + dataset_type, img1_time_str,
-                 'ent_' + dataset_type, ent_time_str,
-                 'str_len_' + dataset_type, str_lengths_time_str,
-                 ), BYTE_TIME_PATH)
+#   ent_time_str = ', '.join(str(x) for x in entropy_time)
+#   str_lengths_time_str = ', '.join(str(x) for x in str_lengths_time)
+#   io.save_txt(('one_gram_' + dataset_type, oneg_time_str, 'two_gram_' + dataset_type, twog_time_str,
+#                'bc_meta_data_' + dataset_type, m_data_time_str, 'img1_' + dataset_type, img1_time_str,
+#                'ent_' + dataset_type, ent_time_str,
+#                'str_len_' + dataset_type, str_lengths_time_str,
+#                ), BYTE_TIME_PATH)

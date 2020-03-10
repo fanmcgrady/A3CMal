@@ -1,5 +1,6 @@
 import lief
-
+import sys
+sys.path.append('../rl/')
 from gym_malware.envs.controls.manipulate2 import MalwareManipulator
 
 pe = '../../Dataset/pe/backdoor/Backdoor.Win32.Rbot.pzu'
