@@ -137,11 +137,24 @@ def feature_fusion():
     print(','.join(finalSets))
     # Save the combined datasets
     os.chdir(savePath)
+    max_length_path = finalDataSets[0].dataSetName
     for ds in finalDataSets:
         jointFile = pd.concat([ds.data, ds.classLabel], axis=1, join='inner')
         if not os.path.exists(savePath + ds.dataSetName):
             os.makedirs(savePath + ds.dataSetName)
         jointFile.to_csv(COMBINED_PATH_CSV + ds.dataSetName + '/NewTrain.csv', sep=',', index=False)
+
+        # 找出最长的路径
+        if len(ds.dataSetName) > max_length_path:
+            max_length_path = ds.dataSetName
+
+    # 移动最好的NewTrain.csv
+    import shutil
+    new_train_csv = COMBINED_PATH_CSV + max_length_path + '/NewTrain.csv'
+    large_train_csv = TRAIN_FILE
+    shutil.move(new_train_csv, large_train_csv)
+    print('【移动文件{}->{}】'.format(new_train_csv, large_train_csv))
+
     try:
         del singleTrains, singleTrain, processingDataSet, jointFile, finalSets, \
             remainingFeatureCategoriesIndices, featureCategoryFolders, dataSet, dataSet1, dataSet2, data, class_lable
