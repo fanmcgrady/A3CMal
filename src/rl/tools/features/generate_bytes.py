@@ -1,6 +1,7 @@
 import binascii
 import os
 
+from tqdm import tqdm
 
 def generate_bytes(file_name, saved_path):
     real_name = file_name.split('/')[-1]
@@ -15,8 +16,9 @@ def generate_bytes(file_name, saved_path):
             hex_string = str.upper(binascii.b2a_hex(data).decode('ascii'))
             line.append(hex_string)
 
-            if i < 160:
-                continue
+            # 跳过50行
+#            if i < 16 * 50:
+#                continue
 
             if (i + 1) % 16 == 0:
                 # address = generate_address(count)
@@ -27,16 +29,16 @@ def generate_bytes(file_name, saved_path):
         out.write('\n'.join(list))
 
 if __name__ == '__main__':
-    pe = '../../../Dataset/pe'
-    train = '../../../Dataset/train'
-    label_file = '../../../Dataset/trainLabels.csv'
+    pe = '../../../../Dataset/pe'
+    train = '../../../../Dataset/train'
+    label_file = '../../../../Dataset/trainLabels.csv'
 
     with open(label_file, 'w') as csv:
         csv.write('"Id","Class"\n')
         fold_list = os.listdir(pe)
         for i, fold in enumerate(fold_list):
             files = os.listdir(os.path.join(pe, fold))
-            for j, f in enumerate(files):
+            print('processing', fold)
+            for f in tqdm(files):
                 csv.write('"{}",{}\n'.format(f, i + 1))
                 generate_bytes(os.path.join(os.path.join(pe, fold), f), train)
-                print("{}: processing {} of family {}({}%)".format(j + 1, f, fold, (j+1)/len(files)))

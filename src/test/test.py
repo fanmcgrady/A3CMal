@@ -2,16 +2,17 @@ import glob
 import os
 
 import numpy as np
+from tqdm import tqdm
 
 pe = '../../Dataset/train'
 
 length = []
 files = glob.glob(os.path.join(pe, '*.bytes'))
-for i, fp in enumerate(files):
+for fp in tqdm(files):
     with open(fp, 'r') as f:
         length.append(len(f.readlines()))
-    print("progress {}".format((i + 1)/len(files)))
 
 print(min(length))
 print(max(length))
 print(np.mean(length))
+
