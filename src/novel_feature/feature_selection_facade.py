@@ -150,8 +150,8 @@ def feature_fusion():
 
     # 移动最好的NewTrain.csv
     import shutil
-    new_train_csv = COMBINED_PATH_CSV + max_length_path + '/NewTrain.csv'
-    large_train_csv = TRAIN_FILE
+    new_train_csv = str(COMBINED_PATH_CSV + max_length_path + '/NewTrain.csv')
+    large_train_csv = str(TRAIN_FILE)
     shutil.move(new_train_csv, large_train_csv)
     print('【移动文件{}->{}】'.format(new_train_csv, large_train_csv))
 
