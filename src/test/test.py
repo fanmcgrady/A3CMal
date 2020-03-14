@@ -25,7 +25,6 @@ for filename, tuple in mc_map.items():
     fold_list = os.listdir(pe)
     for i, fold in enumerate(fold_list):
         files = os.listdir(os.path.join(pe, fold))
-        print('processing', fold)
         for f in files:
             if f == filename:
                 os.remove(os.path.join(os.path.join(pe, fold), f))
