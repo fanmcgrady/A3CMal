@@ -1,6 +1,8 @@
 import sys
 sys.path.append("../../../")
 import pandas as pd
+import array
+import numpy
 
 from generate_feature import GenerateFeature
 
@@ -9,8 +11,8 @@ from kaggle_Microsoft_malware_full import image_fea
 
 
 class GenerateWinnerFeature(GenerateFeature):
-    def __init__(self, path):
-        super().__init__(path)
+    def __init__(self, bytez):
+        super().__init__(bytez)
 
     def get_features(self):
         # 提取6413个grams指标
@@ -909,9 +911,8 @@ class GenerateWinnerFeature(GenerateFeature):
                         '02566972.1', '02657869', '00005B02', 'A050FF15', '2800006A', '00002935.1', '3C000068',
                         '00FFFF15', '00001385', '68C60000', '0081005F', '61160000', '000031D1', '005F6163']
         one_list = []
-        with open(self.bytes_path, 'r') as read_file:
-            for line in read_file:
-                one_list += line.rstrip().split(" ")[1:]
+        for line in self.bytes_list:
+            one_list += line.rstrip().split(" ")[1:]
         grams_string = [''.join(one_list[i:i + N]) for i in range(len(one_list) - N)]
         # build a dict for looking up
 
@@ -939,9 +940,8 @@ class GenerateWinnerFeature(GenerateFeature):
         colnames += ['FR_' + hex(i)[2:] for i in range(16 ** 2)]
 
         consolidation = []
-        f = open(self.bytes_path, 'r')
         twoByte = [0] * 16 ** 2
-        for row in f:
+        for row in self.bytes_list:
             codes = row[:-2].split()[1:]
 
             # Conversion of code to to two byte
@@ -958,7 +958,7 @@ class GenerateWinnerFeature(GenerateFeature):
 
     def __gen_img(self):
         header = ['Id'] + ['bytes_%i' % x for x in range(1000)]
-        data = [self.file_name] + image_fea.read_image(self.bytes_path)
+        data = [self.file_name] + image_fea.read_image(self.file_name)
 
         return pd.DataFrame([data], columns=header)
 

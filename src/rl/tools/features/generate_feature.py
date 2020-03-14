@@ -1,34 +1,36 @@
 import binascii
 import os
-
+from kaggle_Microsoft_malware_full import image_fea
 
 class GenerateFeature():
-    def __init__(self, path):
+    def __init__(self, bytez):
         # pe 文件名
-        self.pe_path = path
-        # 生成的bytes样本文件
-        self.bytes_path = self.pe_path + '.bytes'
-        self.file_name = 'sample_file'
+        self.bytez = bytez
+        self.bytes_list = []
+        self.file_name = 'tmp.bytes'
 
         self.generate_bytes()
 
     def generate_bytes(self):
-        list = []
         line = []
-        with open(self.pe_path, 'rb') as cur_file:
-            size = os.path.getsize(self.pe_path)  # 获得文件大小
-            for i in range(size):
-                data = cur_file.read(1)  # 每次输出一个字节
-                hex_string = str.upper(binascii.b2a_hex(data).decode('ascii'))
-                line.append(hex_string)
+        size = len(self.bytez)  # 获得文件大小
+        for i in range(size):
+            data = self.bytez[i]  # 每次输出一个字节
+            data = hex(data) # 变成ascii
+            data = str(data)[2:]
+            hex_string = str.upper(data)
+            if len(hex_string) == 1:
+                hex_string = '0' + hex_string
+            line.append(hex_string)
 
-                if (i + 1) % 16 == 0:
-                    # address = generate_address(count)
-                    list.append("00000000 {}".format(" ".join(line)))
-                    line = []
+            if (i + 1) % 16 == 0:
+                # address = generate_address(count)
+                self.bytes_list.append("00000000 {}".format(" ".join(line)))
+                line = []
 
-        with open(self.bytes_path, 'w') as out:
-            out.write('\n'.join(list))
+        # 写到文件中，但是只有image_fea的时候用到
+        with open(self.file_name, 'w') as f:
+            f.write("\n".join(self.bytes_list))
 
     def get_features(self):
         pass
