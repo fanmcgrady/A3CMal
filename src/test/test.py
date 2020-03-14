@@ -53,9 +53,10 @@ re_del_bytes_count = 0
 bytes = os.listdir(train)
 tqdm_bytes = tqdm(bytes)
 for bb in tqdm_bytes:
+    tqdm_bytes.set_description(bb)
     del_flag = True
     for ll in content_new:
-        if bb in ll:
+        if bb.replace('.bytes', '') in ll:
             del_flag = False
             break
     if del_flag:
