@@ -145,7 +145,7 @@ def feature_fusion():
         jointFile.to_csv(COMBINED_PATH_CSV + ds.dataSetName + '/NewTrain.csv', sep=',', index=False)
 
         # 找出最长的路径
-        if len(ds.dataSetName) > max_length_path:
+        if len(ds.dataSetName) > len(max_length_path):
             max_length_path = ds.dataSetName
 
     # 移动最好的NewTrain.csv
