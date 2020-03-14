@@ -38,10 +38,8 @@ for filename, tuple in mc_map.items():
         del_bytes_count += 1
 
     # 重新构造trainLabel.csv
-    process = tqdm(content)
-    for cc in process:
+    for cc in content:
         if filename + '.bytes' in cc:
-            process.set_description("删除标签：{}".format(filename + '.bytes'))
             content_new.remove(cc)
             del_label_count += 1
 
