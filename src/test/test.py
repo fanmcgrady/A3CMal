@@ -32,8 +32,10 @@ for filename, tuple in mc_map.items():
                 del_pe_count += 1
 
     # 删除.bytes
-    os.remove(os.path.join(train, filename + '.bytes'))
-    del_bytes_count += 1
+    ff = os.path.join(train, filename + '.bytes')
+    if os.path.exists(ff):
+        os.remove(ff)
+        del_bytes_count += 1
 
     # 重新构造trainLabel.csv
     process = tqdm(content)
