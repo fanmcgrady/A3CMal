@@ -1,3 +1,4 @@
+import glob
 import os
 import pickle
 
@@ -46,6 +47,22 @@ print("原有{}个pe样本，删除{}个".format(len(content) - 1, del_pe_count)
 print("删除{}个bytes文件".format(del_bytes_count))
 print("原有{}个label，删除{}个label，content_new剩余{}个"
       .format(len(content) - 1, del_label_count, len(content_new) - 1))
+
+re_del_bytes_count = 0
+# 再次清理bytes
+bytes = os.listdir(train)
+tqdm_bytes = tqdm(bytes)
+for bb in tqdm_bytes:
+    del_flag = True
+    for ll in content_new:
+        if bb in ll:
+            del_flag = False
+            break
+    if del_flag:
+        os.remove(os.path.join(train, bb))
+        re_del_bytes_count += 1
+
+print("重新清理{}个bytes文件，剩余{}个".format(re_del_bytes_count, len(glob.glob(os.path.join(train, "*.bytes")))))
 
 with open(label_file, 'w') as csv:
     csv.writelines(content_new)
