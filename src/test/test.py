@@ -8,7 +8,6 @@ mc_path = '../../Dataset/models/mc.dat'
 pe = '../../Dataset/pe'
 train = '../../Dataset/train'
 label_file = '../../Dataset/trainLabels.csv'
-label_file_new = '../../Dataset/trainLabels_new.csv'
 
 mc_map = pickle.load(open(mc_path, 'rb'))
 
@@ -41,11 +40,17 @@ for filename in mc_map.keys():
             content_new.remove(cc)
             del_label_count += 1
 
+# 统计pe
+pe_total = 0
+for fold in os.listdir(pe):
+    pe_total += len(os.listdir(os.path.join(pe, fold)))
+
+# 统计bytes
 bytes = glob.glob(os.path.join(train, '*.bytes'))
 
-print("原有{}个pe样本，删除{}个，剩余{}个".format(len(content) - 1, del_pe_count, len(content) - 1 - del_pe_count))
+print("删除{}个，剩余{}个".format(del_pe_count, pe_total))
 print("删除{}个bytes文件，剩余{}个".format(del_bytes_count, len(bytes)))
-print("原有{}个label，删除{}个label，content_new剩余{}个"
+print("删除{}个label，content_new剩余{}个"
       .format(len(content) - 1, del_label_count, len(content_new) - 1))
 
 with open(label_file, 'w') as csv:
