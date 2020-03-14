@@ -45,7 +45,7 @@ for filename, tuple in mc_map.items():
 print("原有{}个pe样本，删除{}个".format(len(content) - 1, del_pe_count))
 print("删除{}个bytes文件".format(del_bytes_count))
 print("原有{}个label，删除{}个label，content_new剩余{}个"
-      .format(len(content) - 1, len(content) - 1 - del_label_count, len(content_new) - 1))
+      .format(len(content) - 1, del_label_count, len(content_new) - 1))
 
 with open(label_file, 'w') as csv:
     csv.writelines(content_new)
