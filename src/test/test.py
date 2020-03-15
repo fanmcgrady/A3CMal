@@ -2,8 +2,6 @@ import glob
 import os
 import pickle
 
-from tqdm import tqdm
-
 mc_path = '../../Dataset/models/mc.dat'
 pe = '../../Dataset/pe'
 train = '../../Dataset/train'
@@ -36,9 +34,11 @@ for filename in mc_map.keys():
 
     # 重新构造trainLabel.csv
     for cc in content:
-        if filename in cc:
+        filename2 = '"' + filename + '"'
+        if cc.startswith(filename2):
             content_new.remove(cc)
             del_label_count += 1
+            break
 
 # 统计pe
 pe_total = 0
