@@ -7,8 +7,8 @@ from novel_feature.byte_code_extraction_facade import *
 
 
 class GenerateNovelFeature(GenerateFeature):
-    def __init__(self, path):
-        super().__init__(path)
+    def __init__(self, bytez):
+        super().__init__(bytez)
 
     def get_features(self):
 
