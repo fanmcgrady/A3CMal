@@ -51,7 +51,7 @@ bytes = glob.glob(os.path.join(train, '*.bytes'))
 print("删除{}个，剩余{}个".format(del_pe_count, pe_total))
 print("删除{}个bytes文件，剩余{}个".format(del_bytes_count, len(bytes)))
 print("删除{}个label，content_new剩余{}个"
-      .format(len(content) - 1, del_label_count, len(content_new) - 1))
+      .format(del_label_count, len(content_new) - 1))
 
 with open(label_file, 'w') as csv:
     csv.writelines(content_new)
