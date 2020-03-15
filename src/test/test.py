@@ -22,7 +22,7 @@ del_bytes_count = 0
 del_label_count = 0
 for filename in mc_map.keys():
     # 删除pe目录样本
-    fold = filename.split('.')[0].capitalize()
+    fold = filename.split('.')[0].lower()
     pp = os.path.join(os.path.join(pe, fold), filename)
     if os.path.exists(pp):
         os.remove(pp)
