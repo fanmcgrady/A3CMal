@@ -10,10 +10,8 @@ label_file = '../../Dataset/trainLabels.csv'
 mc_map = pickle.load(open(mc_path, 'rb'))
 
 content = []
-content_new = []
 with open(label_file, 'r') as csv:
     content = csv.readlines()
-    content_new = content
 
 del_pe_count = 0
 del_bytes_count = 0
@@ -36,7 +34,7 @@ for filename in mc_map.keys():
     for cc in content:
         filename2 = '"' + filename + '"'
         if cc.startswith(filename2):
-            content_new.remove(cc)
+            content.remove(cc)
             del_label_count += 1
             break
 
@@ -50,8 +48,13 @@ bytes = glob.glob(os.path.join(train, '*.bytes'))
 
 print("删除{}个，剩余{}个".format(del_pe_count, pe_total))
 print("删除{}个bytes文件，剩余{}个".format(del_bytes_count, len(bytes)))
-print("删除{}个label，content_new剩余{}个"
-      .format(del_label_count, len(content_new) - 1))
+print("删除{}个label，trainLabel.csv剩余{}个"
+      .format(del_label_count, len(content) - 1))
+
+if pe_total == len(bytes) and len(bytes) == len(content) - 1:
+    print("清理成功，样本数为：{}".format(pe_total))
+else:
+    print("清理失败，分别为：{}，{}，{}".format(pe_total, len(bytes), len(content) - 1))
 
 with open(label_file, 'w') as csv:
-    csv.writelines(content_new)
+    csv.writelines(content)
