@@ -28,7 +28,7 @@ for filename in mc_map.keys():
     if fold == 'virtool':
         fold = 'virus'
     if fold not in family:
-        print(fold)
+        fold = 'net-worm'
     pp = os.path.join(os.path.join(pe, fold), filename)
     if os.path.exists(pp):
         os.remove(pp)
