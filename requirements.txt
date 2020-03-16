@@ -10,3 +10,4 @@ mahotas
 capstone
 chainerrl
 lief
+aliyun-python-sdk-core-v3

@@ -1,7 +1,3 @@
-import binascii
-import os
-from kaggle_Microsoft_malware_full import image_fea
-
 class GenerateFeature():
     def __init__(self, bytez):
         # pe 文件名
@@ -16,7 +12,7 @@ class GenerateFeature():
         size = len(self.bytez)  # 获得文件大小
         for i in range(size):
             data = self.bytez[i]  # 每次输出一个字节
-            data = hex(data) # 变成ascii
+            data = hex(data)  # 变成ascii
             data = str(data)[2:]
             hex_string = str.upper(data)
             if len(hex_string) == 1:

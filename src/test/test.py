@@ -29,6 +29,11 @@ for filename in mc_map.keys():
         fold = 'virus'
     if fold not in family:
         fold = 'net-worm'
+
+    # dos\exploit 样本数量已经较少，不删
+    if fold == 'dos' or fold == 'exploit':
+        continue
+
     pp = os.path.join(os.path.join(pe, fold), filename)
     if os.path.exists(pp):
         os.remove(pp)

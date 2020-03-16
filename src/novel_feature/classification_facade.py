@@ -24,6 +24,10 @@ import os
 #izip会报错，要改成zip
 #from itertools import izip
 
+import sys
+sys.path.append("../")
+from message.message import *
+
 
 def multiclass_log_loss(y_true, y_pred, eps = 1e-15):
     predictions = np.clip(y_pred, eps, 1 - eps)
@@ -196,6 +200,10 @@ def custom_cross_validation(data, class_labels, classifier_name = 'xgb', n_split
     print('===========================================')
     print('In total {} misclassified samples'.format(misclassified_counter-1))
     print('Accuracy mean : ' + str(np.mean(accuracies)))
+    # 发送短信
+    msg = Message()
+    msg.send('novel', str(np.mean(accuracies)))
+
     print('F1_score mean : ' + str(np.mean(f1_scores)))
     print('log loss mean : ' + str(np.mean(log_losses)))
 
