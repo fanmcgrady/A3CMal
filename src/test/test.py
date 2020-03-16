@@ -16,9 +16,17 @@ with open(label_file, 'r') as csv:
 del_pe_count = 0
 del_bytes_count = 0
 del_label_count = 0
+family = ['backdoor', 'dos', 'email', 'exploit', 'net-worm', 'rootkit', 'trojan', 'virus', 'worm']
+
 for filename in mc_map.keys():
     # 删除pe目录样本
     fold = filename.split('.')[0].lower()
+    if fold.startswith('trojan'):
+        fold = 'trojan'
+    if fold == 'virTool':
+        fold = 'virus'
+    if fold not in family:
+        print(fold)
     pp = os.path.join(os.path.join(pe, fold), filename)
     if os.path.exists(pp):
         os.remove(pp)
