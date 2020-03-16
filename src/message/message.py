@@ -1,19 +1,21 @@
-from message.readconfig import ReadConfig
 from aliyunsdkcore.client import AcsClient
 from aliyunsdkcore.request import CommonRequest
 
 class Message:
     def __init__(self):
-        self.config = ReadConfig()
-        self.client = AcsClient(self.config.get_key("key"), self.config.get_key("secret"), 'cn-hangzhou')
+        key = 'LTAI4Fkewc4q3R1F2BXC91PS'
+        secret = 'TYk8B0KGFN7ZrNmdJynDLxRelHx6Jf'
+
+        self.client = AcsClient(key, secret, 'cn-hangzhou')
 
     def send(self, experment, result):
         # 模版内容:
         # ${experment}的实验结果为：${result}
         contents = "{" + "'experment': '{}', 'result': '{}'".format(experment, result) + "}"
-
-        for key, value in self.config.get_users():
-            self.__sendTo(value, contents)
+        # 方老师 = 13550345266
+        # 耿大宝 = 18883992660
+        self.__sendTo('13550345266', contents)
+        self.__sendTo('18883992660', contents)
 
     def __sendTo(self, phone, contents):
         request = CommonRequest()
