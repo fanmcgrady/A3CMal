@@ -2,7 +2,7 @@ import configparser
 
 
 class ReadConfig:
-    def __init__(self, filepath='config.ini'):
+    def __init__(self, filepath='message/config.ini'):
         self.cf = configparser.ConfigParser()
         self.cf.read(filepath)
 
