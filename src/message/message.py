@@ -34,6 +34,6 @@ class Message:
         response = self.client.do_action(request)
         print(str(response, encoding='utf-8'))
 
-if __name__ == '__main__':
-    msg = Message()
-    msg.send('novel', '0.902')
+# if __name__ == '__main__':
+#     msg = Message()
+#     msg.send('novel', '0.902')
