@@ -23,7 +23,9 @@ for filename in mc_map.keys():
     fold = filename.split('.')[0].lower()
     if fold.startswith('trojan'):
         fold = 'trojan'
-    if fold == 'virTool':
+    if fold.startswith('email'):
+        fold = 'email'
+    if fold == 'virtool':
         fold = 'virus'
     if fold not in family:
         print(fold)
