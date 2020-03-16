@@ -1,4 +1,4 @@
-from readconfig import ReadConfig
+from message.readconfig import ReadConfig
 from aliyunsdkcore.client import AcsClient
 from aliyunsdkcore.request import CommonRequest
 
