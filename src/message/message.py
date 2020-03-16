@@ -27,7 +27,7 @@ class Message:
         request.add_query_param('RegionId', "cn-hangzhou")
         request.add_query_param('PhoneNumbers', phone)
         request.add_query_param('SignName', "四川大学网络空间安全学院")
-        request.add_query_param('TemplateCode', "SMS_183760754")
+        request.add_query_param('TemplateCode', "SMS_185812485")
         request.add_query_param('TemplateParam', contents)
 
         response = self.client.do_action(request)
