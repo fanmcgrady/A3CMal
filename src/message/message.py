@@ -29,6 +29,7 @@ class Message:
         request.add_query_param('SignName', "四川大学网络空间安全学院")
         request.add_query_param('TemplateCode', "SMS_185812485")
         request.add_query_param('TemplateParam', contents)
+        print(contents)
 
         response = self.client.do_action(request)
         print(str(response, encoding='utf-8'))
