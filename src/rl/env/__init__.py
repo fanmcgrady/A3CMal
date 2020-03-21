@@ -1,10 +1,7 @@
 from gym.envs.registration import register
 
 # create a holdout set
-from sklearn.model_selection import train_test_split
-import numpy as np
 from tools.interface import *
-from env.malware_env import MalwareEnv
 
 np.random.seed(123)
 # sha256 = interface.get_available_sha256()

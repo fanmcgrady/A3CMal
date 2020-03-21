@@ -2,8 +2,8 @@
 # ! /usr/bin/python
 import argparse
 import linecache
-import os
 import sys
+
 # add rl
 sys.path.append('.')
 # add winner
@@ -17,7 +17,6 @@ import chainer.functions as F
 import chainer.links as L
 import chainerrl
 import gym
-import numpy as np
 from chainer import optimizers
 from chainerrl import experiments, explorers, misc
 from chainerrl.replay_buffers import *
@@ -34,6 +33,7 @@ ACTION_LOOKUP = {i: act for i, act in enumerate(manipulate.ACTION_TABLE.keys())}
 net_layers = [256, 64]
 
 log_path = "log.txt"
+
 
 # 用于快速调用chainerrl的训练方法，参数如下：
 # 1、命令行启动visdom
@@ -52,7 +52,7 @@ def main():
     parser.add_argument('--load', type=str, default=None)
     parser.add_argument('--steps', type=int, default=30000)
     parser.add_argument('--prioritized-replay', action='store_false')
-    parser.add_argument('--episodic-replay', action='store_true')
+    # parser.add_argument('--episodic-replay', action='store_true')
     parser.add_argument('--replay-start-size', type=int, default=1000)
     parser.add_argument('--target-update-interval', type=int, default=10 ** 2)
     parser.add_argument('--target-update-method', type=str, default='hard')
