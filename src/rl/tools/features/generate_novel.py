@@ -1,9 +1,7 @@
-import sys
-sys.path.append("../../../")
-
 import traceback
-from generate_feature import GenerateFeature
-from novel_feature.byte_code_extraction_facade import *
+
+from tools.features.generate_feature import GenerateFeature
+from byte_code_extraction_facade import *
 
 
 class GenerateNovelFeature(GenerateFeature):

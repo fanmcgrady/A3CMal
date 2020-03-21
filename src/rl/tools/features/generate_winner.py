@@ -1,13 +1,7 @@
-import sys
-sys.path.append("../../../")
 import pandas as pd
-import array
-import numpy
 
-from generate_feature import GenerateFeature
-
-
-from kaggle_Microsoft_malware_full import image_fea
+from tools.features.generate_feature import GenerateFeature
+import image_fea
 
 
 class GenerateWinnerFeature(GenerateFeature):
@@ -26,7 +20,7 @@ class GenerateWinnerFeature(GenerateFeature):
 
         # 参考semi_model.py的合并
         train = pd.merge(freq_count, grams, on='Id')
-        # train = pd.merge(train, image_fea, on='Id')
+        train = pd.merge(train, image_fea, on='Id')
 
         del train['Id']
 
@@ -961,7 +955,6 @@ class GenerateWinnerFeature(GenerateFeature):
         data = [self.file_name] + image_fea.read_image(self.file_name)
 
         return pd.DataFrame([data], columns=header)
-
 
 # if __name__ == '__main__':
 #     winner = GenerateWinnerFeature('java.bytes')

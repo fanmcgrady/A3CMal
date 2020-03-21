@@ -11,3 +11,4 @@ capstone
 chainerrl
 lief
 aliyun-python-sdk-core-v3
+visdom
