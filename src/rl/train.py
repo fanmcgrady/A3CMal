@@ -21,6 +21,7 @@ from chainer import optimizers
 from chainerrl import experiments, explorers, misc
 from chainerrl.replay_buffers import *
 
+import env
 from env import sha256_holdout, MAXTURNS
 from action import action as manipulate
 from tools.interface import *
@@ -50,7 +51,7 @@ def main():
     parser.add_argument('--start-epsilon', type=float, default=1.0)
     parser.add_argument('--end-epsilon', type=float, default=0.1)
     parser.add_argument('--load', type=str, default=None)
-    parser.add_argument('--steps', type=int, default=30000)
+    parser.add_argument('--steps', type=int, default=10000)
     parser.add_argument('--prioritized-replay', action='store_false')
     # parser.add_argument('--episodic-replay', action='store_true')
     parser.add_argument('--replay-start-size', type=int, default=1000)

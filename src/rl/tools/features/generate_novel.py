@@ -1,7 +1,7 @@
 import traceback
 
-from tools.features.generate_feature import GenerateFeature
 from byte_code_extraction_facade import *
+from tools.features.generate_feature import GenerateFeature
 
 
 class GenerateNovelFeature(GenerateFeature):
@@ -10,21 +10,19 @@ class GenerateNovelFeature(GenerateFeature):
 
     def get_features(self):
 
-        # byte_entropy+byte_oneg+byte_str_lengths+byte_meta_data+byte_img1
+        # byte_oneg + byte_entropy + byte_str_lengths + byte_meta_data + byte_img1
 
         with open(self.file_name, 'r') as f:
             feature = []
             try:
-                start_time = time.time()
+                # 提取1-gram特征
+                oneg = byte_1gram(f)
+                feature.extend(oneg)
+                f.seek(0)
 
                 # Entropy特征
                 entropy = byte_entropy(f)
                 feature.extend(entropy)
-                f.seek(0)
-
-                # 提取1-gram特征
-                oneg = byte_1gram(f)
-                feature.extend(oneg)
                 f.seek(0)
 
                 # String_lengths特征
@@ -41,10 +39,6 @@ class GenerateNovelFeature(GenerateFeature):
                 image1 = byte_image1(f)
                 feature.extend(image1)
                 f.seek(0)
-
-                # 显示一个文件提取时间
-                time_cost = time.time() - start_time
-                print("Extraction feature cost time:{}".format(time_cost))
 
             except Exception as err:
                 print(err, traceback.print_exc())

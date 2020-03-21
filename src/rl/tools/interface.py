@@ -18,8 +18,8 @@ from tools.plot_cm import *
 
 class Interface():
     def __init__(self, test=False):
-        self.model = WINNER_MODEL
-        # self.model = NOVEL_MODEL
+        # self.model = WINNER_MODEL
+        self.model = NOVEL_MODEL
         self.test = test
         self.predict = Predict(self.model)
 
@@ -85,7 +85,6 @@ class Interface():
         draw_cm(original, predict, 'test')
 
 
-# if __name__ == '__main__':
-#
-#
-#     interface = Interface(novel_model)
+if __name__ == '__main__':
+    interface = Interface()
+    interface.draw()
