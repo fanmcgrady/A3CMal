@@ -145,13 +145,13 @@ def feature_fusion():
         jointFile.to_csv(COMBINED_PATH_CSV + ds.dataSetName + '/NewTrain.csv', sep=',', index=False)
 
         # 找出最长的路径
-        if len(ds.dataSetName) > max_length_path:
+        if len(ds.dataSetName) > len(max_length_path):
             max_length_path = ds.dataSetName
 
     # 移动最好的NewTrain.csv
     import shutil
-    new_train_csv = COMBINED_PATH_CSV + max_length_path + '/NewTrain.csv'
-    large_train_csv = TRAIN_FILE
+    new_train_csv = str(COMBINED_PATH_CSV + max_length_path + '/NewTrain.csv')
+    large_train_csv = str(TRAIN_FILE)
     shutil.move(new_train_csv, large_train_csv)
     print('【移动文件{}->{}】'.format(new_train_csv, large_train_csv))
 

@@ -24,6 +24,10 @@ import os
 #izip会报错，要改成zip
 #from itertools import izip
 
+import sys
+sys.path.append("../")
+from message.message import *
+
 
 def multiclass_log_loss(y_true, y_pred, eps = 1e-15):
     predictions = np.clip(y_pred, eps, 1 - eps)
@@ -174,18 +178,32 @@ def custom_cross_validation(data, class_labels, classifier_name = 'xgb', n_split
         print(accuracies[-1], f1_scores[-1], log_losses[-1])
 
         if(print_mc_samples == True):
+            mc_map = {}
             for i in range(len(pred_class)):
                 if pred_class[i] != test_actual_labels[i]:
-                    print(misclassified_counter,'==>', test_MD5[i], 'actual='+str(test_actual_labels[i]), \
-                           'predicted='+str(pred_class[i]), 'actual probability='+ str(pred_prob[i, test_id_num[i]]), \
-                            'predicted probability='+ str(pred_prob[i, name_dictionary[pred_class[i]]]))
+                    # 保存分错文件
+                    mc_map[test_MD5[i]] = (test_actual_labels[i], pred_class[i])
+                    print(misclassified_counter,'==>', test_MD5[i],
+                          'actual='+str(test_actual_labels[i]),
+                          'predicted='+str(pred_class[i]),
+                          'actual probability='+ str(pred_prob[i, test_id_num[i]]),
+                          'predicted probability='+ str(pred_prob[i, name_dictionary[pred_class[i]]]))
                     misclassified_counter += 1
+
+            print("保存错分的文件到：", os.path.join(MODEL_PATH, 'mc.dat'))
+            pickle.dump(mc_map, open(os.path.join(MODEL_PATH, 'mc.dat'), 'wb'))
+
+
 
     predicted = np.array(predicted)
     original = np.array(original)
     print('===========================================')
     print('In total {} misclassified samples'.format(misclassified_counter-1))
     print('Accuracy mean : ' + str(np.mean(accuracies)))
+    # 发送短信
+    msg = Message()
+    msg.send('novel', str(np.mean(accuracies)))
+
     print('F1_score mean : ' + str(np.mean(f1_scores)))
     print('log loss mean : ' + str(np.mean(log_losses)))
 
