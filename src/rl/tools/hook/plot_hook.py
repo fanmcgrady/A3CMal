@@ -39,7 +39,7 @@ class PlotHook(StepHook):
 
         self.plot_index = plot_index
         self.episode_step = 0
-        self.vis = visdom.Visdom(port=8888)
+        self.vis = visdom.Visdom(port=8080)
         assert self.vis.check_connection(), "Fail to connect to Visdom backend!"
 
     def plot(self, step: int, sig: dict):
