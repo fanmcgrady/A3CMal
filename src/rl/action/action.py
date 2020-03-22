@@ -438,10 +438,12 @@ def modify_without_breaking(bytez, action):
     # redirect standard out only in this queue
     try:
         bytez = _action()
-    except (RuntimeError, UnicodeDecodeError, TypeError, lief.not_found) as e:
+    except Exception as e:
         # some exceptions that have yet to be handled by public release of LIEF
         print("==== exception in process ===")
         print(e)
+        print("return unmodified bytez to make sure training process continue!")
+        return bytez
         # shared_bytez remains unchanged
 
     # for action in actions:
