@@ -18,8 +18,8 @@ from tools.plot_cm import *
 
 class Interface():
     def __init__(self, test=False):
-        # self.model = WINNER_MODEL
-        self.model = NOVEL_MODEL
+        self.model = WINNER_MODEL
+        # self.model = NOVEL_MODEL
         self.test = test
         self.predict = Predict(self.model)
 
@@ -53,7 +53,9 @@ class Interface():
     def get_label_local(self, bytez):
         label = self.predict.predict(bytez)
         state = self.predict.get_state()
-        return label, state
+        # label要加1
+        label += 1
+        return str(label), state
 
     def get_state(self, bytez):
         return self.predict.get_state_without_predict(bytez)
@@ -81,7 +83,7 @@ class Interface():
 
             bytez = self.fetch_file(filepath)
             label, _ = self.get_label_local(bytez)
-            predict.append(str(label + 1))
+            predict.append(str(label))
         draw_cm(original, predict, 'test')
 
 

@@ -53,7 +53,7 @@ def main():
     parser.add_argument('--load', type=str, default=None)
     parser.add_argument('--steps', type=int, default=10000)
     parser.add_argument('--prioritized-replay', action='store_false')
-    # parser.add_argument('--episodic-replay', action='store_true')
+    parser.add_argument('--episodic-replay', action='store_true')
     parser.add_argument('--replay-start-size', type=int, default=1000)
     parser.add_argument('--target-update-interval', type=int, default=10 ** 2)
     parser.add_argument('--target-update-method', type=str, default='hard')
@@ -109,7 +109,7 @@ def main():
 
     # 创建ddqn agent
     def create_ddqn_agent(env, args):
-        obs_size = env.observation_space.shape[0]
+        obs_size = env.observation_space.shape[1]
         action_space = env.action_space
         n_actions = action_space.n
 
@@ -205,7 +205,7 @@ def main():
             train_max_episode_len=env.maxturns,  # Maximum length of each episodes
             eval_interval=args.eval_interval,  # Evaluate the graduation_agent after every 1000 steps
             eval_n_steps=args.eval_n_runs,  # 100 episodes are sampled for each evaluation
-            eval_n_episodes=args.eval_n_runs,
+            eval_n_episodes=None,
             outdir=args.outdir,  # Save everything to 'result' directory
             step_hooks=[step_q_hook, step_loss_hook],
             successful_score=7,
