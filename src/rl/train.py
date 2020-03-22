@@ -235,17 +235,18 @@ def main():
         return os.path.join(basedir, str(lastmodel))
 
     # 动作评估，测试时使用
-    def evaluate(action_function):
+    def evaluate(action_function, cm_name):
         success = []
         misclassified = []
         label_map = interface.get_original_label()
+        cm_dict_before = {}
+        cm_dict_after = {}
         for sha256 in sha256_holdout:
             # 创建字典存放测试后的{文件——>类别}对应关系
-            cm_dict_before = {}
-            cm_dict_after = {}
             success_dict = defaultdict(list)
             bytez = interface.fetch_file(sha256)
             label, _ = interface.get_label_local(bytez)
+            cm_dict_before[sha256] = label
             if label != label_map[sha256]:
                 misclassified.append(sha256)
                 continue  # already misclassified, move along
@@ -263,6 +264,9 @@ def main():
             # 说明改了MAXTURN次还没成功，记录原始标签
             if sha256 not in cm_dict_after:
                 cm_dict_after[sha256] = env.label_map[sha256]
+
+        # 绘制cm
+        interface.draw_after_train(cm_dict_before, cm_dict_after, cm_name)
 
         return success, misclassified  # evasion accuracy is len(success) / len(sha256_holdout)
 
@@ -331,7 +335,7 @@ def main():
         # baseline: choose actions at random
         if args.test_random:
             random_action = lambda bytez: np.random.choice(list(manipulate.ACTION_TABLE.keys()))
-            random_success, misclassified = evaluate(random_action)
+            random_success, misclassified = evaluate(random_action, 'random')
             total = len(sha256_holdout) - len(misclassified)  # don't count misclassified towards success
 
             with open(scores_file, 'a') as f:
@@ -355,7 +359,7 @@ def main():
         agent = create_ddqn_agent(env, args)
         mm = get_latest_model_dir_from(model_fold)
         agent.load(mm)
-        success, _ = evaluate(agent_policy(agent))
+        success, _ = evaluate(agent_policy(agent), 'test')
         blackbox_result = "black: {}({}/{})".format(len(success) / total, len(success), total)
         with open(scores_file, 'a') as f:
             f.write("{}->{}\n".format(mm, blackbox_result))

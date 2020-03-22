@@ -71,7 +71,7 @@ class Interface():
         return label_map
 
     # 绘制cm
-    def draw(self):
+    def draw(self, cm_name):
         file_list = self.get_available_sha256()
         label_map = self.get_original_label()
 
@@ -84,7 +84,16 @@ class Interface():
             bytez = self.fetch_file(filepath)
             label, _ = self.get_label_local(bytez)
             predict.append(str(label))
-        draw_cm(original, predict, 'test')
+        draw_cm(original, predict, cm_name)
+
+    def draw_after_train(self, before, after, cm_name):
+        original = []
+        predict = []
+        for key in before.keys():
+            original.append(before.get(key))
+            predict.append(after.get(key))
+
+        draw_cm(original, predict, cm_name)
 
 
 if __name__ == '__main__':
