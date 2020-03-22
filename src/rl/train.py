@@ -254,7 +254,7 @@ def main():
                 action = action_function(bytez)
                 print(action)
                 success_dict[sha256].append(action)
-                bytez = manipulate.modify_without_breaking(bytez, [action])
+                bytez = manipulate.modify_without_breaking(bytez, action)
                 new_label, new_state = interface.get_label_local(bytez)
                 if new_label != env.label_map[sha256]:
                     # 如果改成功了，记录
