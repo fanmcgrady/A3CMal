@@ -27,8 +27,6 @@ from action import action as manipulate
 from tools.interface import *
 from tools.hook.plot_hook import PlotHook
 
-interface = Interface()
-
 ACTION_LOOKUP = {i: act for i, act in enumerate(manipulate.ACTION_TABLE.keys())}
 
 net_layers = [256, 64]
@@ -275,6 +273,8 @@ def main():
         print(content)
         with open(log_path, 'a') as f:
             f.write(content)
+
+    interface = Interface(args.test)
 
     if not args.test:
         print("training...")

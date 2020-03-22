@@ -99,7 +99,7 @@ class MalwareManipulator(object):
     # append bytes to the overlay (end of PE file)
     def ARBE(self, seed=None):  # random加的？？？
         random.seed(seed)
-        L = self.__random_length()
+        L = self.__random_length() * (2 ** 3)
         # choose the upper bound for a uniform distribution in [0,upper]
         upper = random.randrange(256)
         # upper chooses the upper bound on uniform distribution:
@@ -172,7 +172,7 @@ class MalwareManipulator(object):
 
         # fill with random content
         upper = random.randrange(256)  # section含content、虚拟地址、type
-        L = self.__random_length()
+        L = self.__random_length() * (2 ** 3)
         new_section.content = [random.randint(0, upper) for _ in range(L)]
 
         new_section.virtual_address = max(
@@ -200,8 +200,15 @@ class MalwareManipulator(object):
         # rename a random section
         random.seed(seed)
         binary = lief.parse(self.bytez)
-        targeted_section = random.choice(binary.sections)
-        targeted_section.name = random.choice(COMMON_SECTION_NAMES)[:7]  # current version of lief not allowing 8 chars?
+
+        # 所有section全部改名
+        for targeted_section in binary.sections:
+            targeted_section.name = random.choice(COMMON_SECTION_NAMES)[
+                                    :7]  # current version of lief not allowing 8 chars?
+
+        # 随机改一次名字
+        # targeted_section = random.choice(binary.sections)
+        # targeted_section.name = random.choice(COMMON_SECTION_NAMES)[:7]  # current version of lief not allowing 8 chars?
 
         self.bytez = self.__binary_to_bytez(binary)
 

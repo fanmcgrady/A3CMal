@@ -93,6 +93,8 @@ class Interface():
             original.append(before.get(key))
             predict.append(after.get(key))
 
+        print('original:{}'.format(original))
+        print('predict:{}'.format(predict))
         draw_cm(original, predict, cm_name)
 
 
