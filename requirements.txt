@@ -8,7 +8,7 @@ matplotlib
 IPython
 mahotas
 capstone
-chainerrl
+chainerrl==0.8.0
 lief
 aliyun-python-sdk-core-v3
 visdom
