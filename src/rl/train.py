@@ -289,7 +289,7 @@ def main():
                     count += 1
                     if v['evaded']:
                         success_count += 1
-                        f.write("{}:{}->{}\n".format(count, k, v['evaded_sha256']))
+                        f.write("{}:{}->True\n".format(count, k))
                     else:
                         f.write("{}:{}->\n".format(count, k))
 
@@ -318,7 +318,6 @@ def main():
         scores_file = os.path.join(model_fold, 'scores.txt')
 
         env = gym.make('malware-test-v0')
-        test_model = env.model
 
         # baseline: choose actions at random
         if args.test_random:
