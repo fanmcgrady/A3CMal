@@ -240,6 +240,9 @@ def main():
         misclassified = []
         label_map = interface.get_original_label()
         for sha256 in sha256_holdout:
+            # 创建字典存放测试后的{文件——>类别}对应关系
+            cm_dict_before = {}
+            cm_dict_after = {}
             success_dict = defaultdict(list)
             bytez = interface.fetch_file(sha256)
             label, _ = interface.get_label_local(bytez)
@@ -253,8 +256,14 @@ def main():
                 bytez = manipulate.modify_without_breaking(bytez, [action])
                 new_label, new_state = interface.get_label_local(bytez)
                 if new_label != env.label_map[sha256]:
+                    # 如果改成功了，记录
+                    cm_dict_after[sha256] = new_label
                     success.append(success_dict)
                     break
+            # 说明改了MAXTURN次还没成功，记录原始标签
+            if sha256 not in cm_dict_after:
+                cm_dict_after[sha256] = env.label_map[sha256]
+
         return success, misclassified  # evasion accuracy is len(success) / len(sha256_holdout)
 
     # 打印日志
