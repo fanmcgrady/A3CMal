@@ -281,9 +281,10 @@ def main():
 
         # 反复多次重新训练模型，避免手工操作
         for _ in range(args.rounds):
+            start_time = time.time()
             args.outdir = experiments.prepare_output_dir(
                 args, args.outdir, argv=sys.argv)
-            print_log(log_path, 'Output files will be saved in {}'.format(args.outdir))
+            print_log(log_path, 'Output files will be saved in {}\n'.format(args.outdir))
 
             # 删除actions的日志文件
             if os.path.exists("history_log.txt"):
@@ -323,6 +324,7 @@ def main():
 
             os.rename(args.outdir, '{}-{}{}'.format(args.outdir, success_score, '-success' if success_flag else ''))
 
+            print_log(log_path, 'Time elapsed {}\n'.format(time.time() - start_time))
             # 重置outdir到models
             args.outdir = 'models'
     else:
