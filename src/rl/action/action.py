@@ -436,72 +436,74 @@ class MalwareManipulator(object):
 def identity(bytez, seed=None):
     return bytez
 
+# def modify_without_breaking(bytez, action):
+#     _action = ACTION_TABLE[action]
+#
+#     _action = MalwareManipulator(bytez).__getattribute__(_action)
+#
+#     # redirect standard out only in this queue
+#     try:
+#         bytez = _action()
+#     except Exception as e:
+#         # some exceptions that have yet to be handled by public release of LIEF
+#         print("==== exception in process ===")
+#         print(e)
+#         print("return unmodified bytez to make sure training process continue!")
+#         return bytez
+#
+#     import hashlib
+#     m = hashlib.sha256()
+#     m.update(bytez)
+#     return bytez
 
-def modify_without_breaking(bytez, action):
+def modify_without_breaking(bytez, action=None, seed=None):
     _action = ACTION_TABLE[action]
 
-    _action = MalwareManipulator(bytez).__getattribute__(_action)
+    # we run manipulation in a child process to shelter
+    # our malware model from rare parsing errors in LIEF that
+    # may segfault or timeout
+    def helper(_action, shared_list):
+        # TODO: LIEF is chatty. redirect stdout and stderr to /dev/null
 
-    # redirect standard out only in this queue
+        # for this process, change segfault of the child process
+        # to a RuntimeEror
+        def sig_handler(signum, frame):
+            raise RuntimeError
+
+        signal.signal(signal.SIGSEGV, sig_handler)
+
+        bytez = array.array('B', shared_list[:]).tobytes()
+        # TODO: LIEF is chatty. redirect output to /dev/null
+        if type(_action) is str:
+            _action = MalwareManipulator(bytez).__getattribute__(_action)
+        else:
+            _action = functools.partial(_action, bytez)
+
+        # redirect standard out only in this queue
+        try:
+            shared_list[:] = _action(seed)
+        except (RuntimeError, UnicodeDecodeError, TypeError, lief.not_found) as e:
+            # some exceptions that have yet to be handled by public release of LIEF
+            print("==== exception in child process ===")
+            print(e)
+            # shared_bytez remains unchanged
+
+    # communicate with the subprocess through a shared list
+    # can't use multiprocessing.Array since the subprocess may need to
+    # change the size
+    manager = multiprocessing.Manager()
+    shared_list = manager.list()
+    shared_list[:] = bytez  # copy bytez to shared array
+    # define process
+    p = multiprocessing.Process(target=helper, args=(_action, shared_list))
+    p.start()  # start the process
     try:
-        bytez = _action()
-    except Exception as e:
-        # some exceptions that have yet to be handled by public release of LIEF
-        print("==== exception in process ===")
-        print(e)
-        print("return unmodified bytez to make sure training process continue!")
-        return bytez
-        # shared_bytez remains unchanged
+        p.join(5)  # allow this to take up to 5 seconds...
+    except multiprocessing.TimeoutError:  # ..then become petulant
+        print('==== timeouterror ')
+        p.terminate()
 
-    # for action in actions:
-    #
-    #     _action = ACTION_TABLE[action]
-    #
-    #     # we run manipulation in a child process to shelter
-    #     # our malware model from rare parsing errors in LIEF that
-    #     # may segfault or timeout
-    #     def helper(_action, shared_list):
-    #         # TODO: LIEF is chatty. redirect stdout and stderr to /dev/null
-    #
-    #         # for this process, change segfault of the child process
-    #         # to a RuntimeEror
-    #         def sig_handler(signum, frame):
-    #             raise RuntimeError
-    #
-    #         signal.signal(signal.SIGSEGV, sig_handler)
-    #
-    #         bytez = array.array('B', shared_list[:]).tobytes()
-    #         # TODO: LIEF is chatty. redirect output to /dev/null
-    #         if type(_action) is str:
-    #             _action = MalwareManipulator(bytez).__getattribute__(_action)
-    #         else:
-    #             _action = functools.partial(_action, bytez)
-    #
-    #         # redirect standard out only in this queue
-    #         try:
-    #             shared_list[:] = _action(seed)
-    #         except (RuntimeError, UnicodeDecodeError, TypeError, lief.not_found) as e:
-    #             # some exceptions that have yet to be handled by public release of LIEF
-    #             print("==== exception in child process ===")
-    #             print(e)
-    #             # shared_bytez remains unchanged
-    #
-    #     # communicate with the subprocess through a shared list
-    #     # can't use multiprocessing.Array since the subprocess may need to
-    #     # change the size
-    #     manager = multiprocessing.Manager()
-    #     shared_list = manager.list()
-    #     shared_list[:] = bytez  # copy bytez to shared array
-    #     # define process
-    #     p = multiprocessing.Process(target=helper, args=(_action, shared_list))
-    #     p.start()  # start the process
-    #     try:
-    #         p.join(5)  # allow this to take up to 5 seconds...
-    #     except multiprocessing.TimeoutError:  # ..then become petulant
-    #         print('==== timeouterror ')
-    #         p.terminate()
-    #
-    #     bytez = array.array('B', shared_list[:]).tobytes()  # copy result from child process
+    bytez = array.array('B', shared_list[:]).tobytes()  # copy result from child process
 
     import hashlib
     m = hashlib.sha256()
