@@ -230,7 +230,7 @@ class MalwareManipulator(object):
             if L > available_size:
                 L = available_size
 
-            upper = random.randrange(256 * 4)
+            upper = random.randrange(256)
             targeted_section.content = targeted_section.content + \
                                    [random.randint(0, upper) for _ in range(L)]
             break
