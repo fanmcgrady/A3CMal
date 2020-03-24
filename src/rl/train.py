@@ -21,7 +21,6 @@ from chainer import optimizers
 from chainerrl import experiments, explorers, misc
 from chainerrl.replay_buffers import *
 
-import env
 from env import sha256_holdout, MAXTURNS
 from action import action as manipulate
 from tools.interface import *
@@ -206,7 +205,7 @@ def main():
             eval_n_episodes=None,
             outdir=args.outdir,  # Save everything to 'result' directory
             step_hooks=[step_q_hook, step_loss_hook],
-            successful_score=6,
+            successful_score=5,
             eval_env=test_env
         )
 
@@ -324,7 +323,7 @@ def main():
 
             os.rename(args.outdir, '{}-{}{}'.format(args.outdir, success_score, '-success' if success_flag else ''))
 
-            print_log(log_path, 'Time elapsed {}\n'.format(time.time() - start_time))
+            print_log(log_path, 'Time elapsed {}\n'.format((time.time() - start_time) / 3600))
             # 重置outdir到models
             args.outdir = 'models'
     else:
