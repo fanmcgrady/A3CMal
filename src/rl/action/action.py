@@ -205,7 +205,7 @@ class MalwareManipulator(object):
         # 所有section全部改名
         for targeted_section in binary.sections:
             targeted_section.name = random.choice(COMMON_SECTION_NAMES)[
-                                    :]  # current version of lief not allowing 8 chars?
+                                    :7]  # current version of lief not allowing 8 chars?
 
         # 随机改一次名字
         # targeted_section = random.choice(binary.sections)
