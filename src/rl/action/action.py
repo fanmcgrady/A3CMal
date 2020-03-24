@@ -31,8 +31,8 @@ COMMON_IMPORTS = json.load(
 # explicitly list so that these may be used externally
 ACTION_TABLE = {
     'ARBE': 'ARBE', # 末尾加随机字符串
-    'imports_append': 'imports_append', # 加一个指定范围内随机加lib、function，10次之内直到加入为止
-    # 'ARI': 'ARI',   # 加一个随机的lib，随机的function
+    # 'imports_append': 'imports_append', # 加一个指定范围内随机加lib、function，10次之内直到加入为止
+    'ARI': 'ARI',   # 加一个随机的lib，随机的function
     'ARS': 'ARS',   # 加节
     'section_rename': 'section_rename',   # 加节
     'section_append': 'section_append',   # 加节
@@ -99,7 +99,7 @@ class MalwareManipulator(object):
     # append bytes to the overlay (end of PE file)
     def ARBE(self, seed=None):  # random加的？？？
         random.seed(seed)
-        L = self.__random_length() * (2 ** 3)
+        L = self.__random_length() * (2 ** 10)
         # choose the upper bound for a uniform distribution in [0,upper]
         upper = random.randrange(256)
         # upper chooses the upper bound on uniform distribution:
@@ -152,12 +152,13 @@ class MalwareManipulator(object):
         random.seed(seed)
         binary = lief.parse(self.bytez)
         # draw a library at random
-        libname = self.generate_random_import_libname()
-        funcname = self.generate_random_name()
-        lowerlibname = libname.lower()
-        # append this lib in the imports
-        lib = binary.add_library(lowerlibname)
-        lib.add_entry(funcname)
+        for _ in range(3):
+            libname = self.generate_random_import_libname()
+            funcname = self.generate_random_name()
+            lowerlibname = libname.lower()
+            # append this lib in the imports
+            lib = binary.add_library(lowerlibname)
+            lib.add_entry(funcname)
 
         self.bytez = self.__binary_to_bytez(binary, imports=True)
 
@@ -172,7 +173,7 @@ class MalwareManipulator(object):
 
         # fill with random content
         upper = random.randrange(256)  # section含content、虚拟地址、type
-        L = self.__random_length() * (2 ** 3)
+        L = self.__random_length() * (2 ** 10)
         new_section.content = [random.randint(0, upper) for _ in range(L)]
 
         new_section.virtual_address = max(
@@ -204,7 +205,7 @@ class MalwareManipulator(object):
         # 所有section全部改名
         for targeted_section in binary.sections:
             targeted_section.name = random.choice(COMMON_SECTION_NAMES)[
-                                    :7]  # current version of lief not allowing 8 chars?
+                                    :]  # current version of lief not allowing 8 chars?
 
         # 随机改一次名字
         # targeted_section = random.choice(binary.sections)
@@ -229,7 +230,7 @@ class MalwareManipulator(object):
             if L > available_size:
                 L = available_size
 
-            upper = random.randrange(256)
+            upper = random.randrange(256 * 4)
             targeted_section.content = targeted_section.content + \
                                    [random.randint(0, upper) for _ in range(L)]
             break
