@@ -220,15 +220,17 @@ def main():
     # 获取保存的模型目录
     def get_latest_model_dir_from(basedir):
         dirs = os.listdir(basedir)
-        lastmodel = -1
+        lastmodel = ''
         for d in dirs:
             try:
-                if int(d) > lastmodel:
-                    lastmodel = int(d)
+                # if int(d) > lastmodel:
+                #     lastmodel = int(d)
+                if '_finish' in d:
+                    lastmodel = d
             except ValueError:
                 continue
 
-        assert lastmodel >= 0, "No saved models!"
+        assert lastmodel != '', "No saved models!"
         return os.path.join(basedir, str(lastmodel))
 
     # 动作评估，测试时使用
