@@ -2,6 +2,8 @@ import csv
 import glob
 import sys
 # add rl
+from tqdm import tqdm
+
 sys.path.append('../../')
 # add winner
 sys.path.append('../../kaggle_Microsoft_malware_full/')
@@ -67,7 +69,7 @@ class Interface():
         for row in csv.DictReader(open(root)):
             label_map[row['Id']] = row['Class']
 
-        print("加载标签字典：{}个".format(len(label_map.keys())))
+        # print("加载标签字典：{}个".format(len(label_map.keys())))
         return label_map
 
     # 绘制cm
@@ -77,7 +79,7 @@ class Interface():
 
         original = []
         predict = []
-        for filepath in file_list:
+        for filepath in tqdm(file_list):
             file_name = os.path.split(filepath)[-1]
             original.append(label_map.get(file_name, 0))
 
@@ -100,4 +102,4 @@ class Interface():
 
 if __name__ == '__main__':
     interface = Interface()
-    interface.draw()
+    interface.draw('train set')

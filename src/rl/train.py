@@ -30,9 +30,6 @@ ACTION_LOOKUP = {i: act for i, act in enumerate(manipulate.ACTION_TABLE.keys())}
 
 net_layers = [256, 64]
 
-log_path = "log.txt"
-
-
 # 用于快速调用chainerrl的训练方法，参数如下：
 # 1、命令行启动visdom
 # ➜  ~ source activate new
@@ -219,19 +216,11 @@ def main():
 
     # 获取保存的模型目录
     def get_latest_model_dir_from(basedir):
-        dirs = os.listdir(basedir)
-        lastmodel = ''
-        for d in dirs:
-            try:
-                # if int(d) > lastmodel:
-                #     lastmodel = int(d)
-                if '_finish' in d:
-                    lastmodel = d
-            except ValueError:
-                continue
-
-        assert lastmodel != '', "No saved models!"
-        return os.path.join(basedir, str(lastmodel))
+        best_model = os.path.join(basedir, 'best')
+        if os.path.exists(best_model):
+            return best_model
+        else:
+            assert False, "No best models!"
 
     # 动作评估，测试时使用
     def evaluate(action_function, cm_name):
@@ -240,7 +229,7 @@ def main():
         label_map = interface.get_original_label()
         cm_dict_before = {}
         cm_dict_after = {}
-        for sha256 in sha256_holdout:
+        for i, sha256 in enumerate(sha256_holdout):
             # 创建字典存放测试后的{文件——>类别}对应关系
             success_dict = defaultdict(list)
             bytez = interface.fetch_file(sha256)
@@ -249,9 +238,11 @@ def main():
             if label != label_map[sha256]:
                 misclassified.append(sha256)
                 continue  # already misclassified, move along
+
+            action_list = []
             for _ in range(MAXTURNS):
                 action = action_function(bytez)
-                print(action)
+                action_list.append(action)
                 success_dict[sha256].append(action)
                 bytez = manipulate.modify_without_breaking(bytez, action)
                 new_label, new_state = interface.get_label_local(bytez)
@@ -260,6 +251,9 @@ def main():
                     cm_dict_after[sha256] = new_label
                     success.append(success_dict)
                     break
+
+            print("{}:{}->{}".format(i + 1, sha256, action_list))
+
             # 说明改了MAXTURN次还没成功，记录原始标签
             if sha256 not in cm_dict_after:
                 cm_dict_after[sha256] = env.label_map[sha256]
@@ -268,12 +262,6 @@ def main():
         interface.draw_after_train(cm_dict_before, cm_dict_after, cm_name)
 
         return success, misclassified  # evasion accuracy is len(success) / len(sha256_holdout)
-
-    # 打印日志
-    def print_log(log_path, content):
-        print(content)
-        with open(log_path, 'a') as f:
-            f.write(content)
 
     interface = Interface(args.test)
 
@@ -285,36 +273,34 @@ def main():
             start_time = time.time()
             args.outdir = experiments.prepare_output_dir(
                 args, args.outdir, argv=sys.argv)
-            print_log(log_path, 'Output files will be saved in {}\n'.format(args.outdir))
-
-            # 删除actions的日志文件
-            if os.path.exists("history_log.txt"):
-                os.remove("history_log.txt")
 
             env, agent = train_agent(args)
 
+            # 训练结束
             with open(os.path.join(args.outdir, 'scores.txt'), 'a') as f:
                 f.write(
                     "total_turn/episode->{}({}/{})\n".format(env.total_turn / env.episode, env.total_turn, env.episode))
-                f.write("history:\n")
 
-                count = 0
                 success_count = 0
                 for k, v in env.history.items():
-                    count += 1
                     if v['evaded']:
                         success_count += 1
-                        f.write("{}:{}->True\n".format(count, k))
-                    else:
-                        f.write("{}:{}->\n".format(count, k))
 
-                f.write("success count:{}".format(success_count))
+                f.write("success count->{}/{}".format(success_count, len(env.history.keys())))
+
+            # 保存history
+            with open(os.path.join(args.outdir, 'history.txt'), 'a') as f:
                 f.write("{}".format(env.history))
 
             # 标识成功失败
             dirs = os.listdir(args.outdir)
-            second_line = linecache.getline(os.path.join(args.outdir, 'scores.txt'), 2)
-            success_score = second_line.strip('\n').split('\t')[3]
+
+            with open(os.path.join(args.outdir, 'scores.txt'), 'r') as f:
+                lines = f.readlines()
+                last = lines[-3]
+                elements = last.strip('\n').split('\t')
+                step = elements[0]
+                success_score = elements[3]
 
             # 训练提前结束，标识成功
             success_flag = False
@@ -323,9 +309,12 @@ def main():
                     success_flag = True
                     break
 
-            os.rename(args.outdir, '{}-{}{}'.format(args.outdir, success_score, '-success' if success_flag else ''))
+            os.rename(args.outdir, '{}-{}-{}-{}'.format(args.outdir.split('.')[0], step, success_score, '-success' if success_flag else ''))
 
-            print_log(log_path, 'Time elapsed {}\n'.format((time.time() - start_time) / 3600))
+            # 保存history
+            with open(os.path.join(args.outdir, 'time.txt'), 'a') as f:
+                f.write('Time elapsed {} hours.\n'.format((time.time() - start_time) / 3600))
+
             # 重置outdir到models
             args.outdir = 'models'
     else:
@@ -344,7 +333,6 @@ def main():
             with open(scores_file, 'a') as f:
                 random_result = "random: {}({}/{})\n".format(len(random_success) / total, len(random_success), total)
                 f.write(random_result)
-                f.write("==========================\n")
 
         total = len(sha256_holdout)
 
