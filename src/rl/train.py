@@ -286,7 +286,7 @@ def main():
                     if v['evaded']:
                         success_count += 1
 
-                f.write("success count->{}/{}".format(success_count, len(env.history.keys())))
+                f.write("success count->{}/{}\n".format(success_count, len(env.history.keys())))
 
             # 保存history
             with open(os.path.join(args.outdir, 'history.txt'), 'a') as f:
@@ -313,7 +313,7 @@ def main():
                     success_flag = True
                     break
 
-            os.rename(args.outdir, '{}-{}-{}-{}'.format(args.outdir.split('.')[0], step, success_score, '-success' if success_flag else ''))
+            os.rename(args.outdir, '{}-{}-{}{}'.format(args.outdir.split('.')[0], step, success_score, '-success' if success_flag else ''))
 
             # 重置outdir到models
             args.outdir = 'models'
