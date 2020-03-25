@@ -292,6 +292,10 @@ def main():
             with open(os.path.join(args.outdir, 'history.txt'), 'a') as f:
                 f.write("{}".format(env.history))
 
+            # 保存history
+            with open(os.path.join(args.outdir, 'time.txt'), 'a') as f:
+                f.write('Time elapsed {} hours.\n'.format((time.time() - start_time) / 3600))
+
             # 标识成功失败
             dirs = os.listdir(args.outdir)
 
@@ -310,10 +314,6 @@ def main():
                     break
 
             os.rename(args.outdir, '{}-{}-{}-{}'.format(args.outdir.split('.')[0], step, success_score, '-success' if success_flag else ''))
-
-            # 保存history
-            with open(os.path.join(args.outdir, 'time.txt'), 'a') as f:
-                f.write('Time elapsed {} hours.\n'.format((time.time() - start_time) / 3600))
 
             # 重置outdir到models
             args.outdir = 'models'
