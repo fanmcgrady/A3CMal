@@ -152,7 +152,7 @@ class MalwareManipulator(object):
         random.seed(seed)
         binary = lief.parse(self.bytez)
         # draw a library at random
-        for _ in range(2):
+        for _ in range(4):
             libname = self.generate_random_import_libname()
             funcname = self.generate_random_name()
             lowerlibname = libname.lower()
