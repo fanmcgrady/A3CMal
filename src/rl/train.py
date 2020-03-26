@@ -235,6 +235,8 @@ def main():
             bytez = interface.fetch_file(sha256)
             label, _ = interface.get_label_local(bytez)
             cm_dict_before[sha256] = label
+            cm_dict_after[sha256] = label   # 先记录原始的，改成功后再更新
+
             if label != label_map[sha256]:
                 misclassified.append(sha256)
                 continue  # already misclassified, move along
@@ -253,10 +255,6 @@ def main():
                     break
 
             print("{}:{}->{}".format(i + 1, sha256, action_list))
-
-            # 说明改了MAXTURN次还没成功，记录原始标签
-            if sha256 not in cm_dict_after:
-                cm_dict_after[sha256] = env.label_map[sha256]
 
         # 绘制cm
         interface.draw_after_train(cm_dict_before, cm_dict_after, cm_name)
