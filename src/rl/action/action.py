@@ -99,7 +99,7 @@ class MalwareManipulator(object):
     # append bytes to the overlay (end of PE file)
     def ARBE(self, seed=None):  # random加的？？？
         random.seed(seed)
-        L = self.__random_length() * (2 ** 9)
+        L = self.__random_length() * (2 ** 10)
         # choose the upper bound for a uniform distribution in [0,upper]
         upper = random.randrange(256)
         # upper chooses the upper bound on uniform distribution:
@@ -173,7 +173,7 @@ class MalwareManipulator(object):
 
         # fill with random content
         upper = random.randrange(256)  # section含content、虚拟地址、type
-        L = self.__random_length() * (2 ** 9)
+        L = self.__random_length() * (2 ** 10)
         new_section.content = [random.randint(0, upper) for _ in range(L)]
 
         new_section.virtual_address = max(
