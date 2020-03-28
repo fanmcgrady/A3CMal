@@ -1,5 +1,6 @@
 import csv
 import glob
+import pickle
 import sys
 # add rl
 from tqdm import tqdm
@@ -10,7 +11,12 @@ sys.path.append('../../kaggle_Microsoft_malware_full/')
 # add novel
 sys.path.append('../../novel_feature')
 
-from reward.predict_file import *
+import xgboost as xgb
+
+from tools.features.generate_novel import *
+from tools.features.generate_winner import *
+
+import os
 module_path = os.path.dirname(os.path.abspath(sys.modules[__name__].__file__))
 
 from tools.plot_cm import *
@@ -24,7 +30,6 @@ MODEL_CLASSIFIER = pickle.load(open(MODEL_NAME, "rb"))
 class Interface():
     def __init__(self, test=False):
         self.test = test
-        self.predict = Predict(MODEL_NAME, MODEL_CLASSIFIER)
 
     # 获取文件二进制数据
     def fetch_file(self, sha256):
@@ -54,14 +59,29 @@ class Interface():
 
     # 获取分类器label
     def get_label_local(self, bytez):
-        label = self.predict.predict(bytez)
-        state = self.predict.get_state()
+        # 提取特征
+        if 'winner' in MODEL_NAME:
+            generator = GenerateWinnerFeature(bytez)
+        else:
+            generator = GenerateNovelFeature(bytez)
+
+        state = generator.get_features()
+
+        dtest = xgb.DMatrix(state, missing=-999)
+        pred_class = MODEL_CLASSIFIER.predict(dtest)
+        label = list(pred_class[0]).index(max(pred_class[0]))
         # label要加1
         label += 1
         return str(label), state
 
+    # predict后直接可以调用，返回state
     def get_state(self, bytez):
-        return self.predict.get_state_without_predict(bytez)
+        if 'winner' in MODEL_NAME:
+            generator = GenerateWinnerFeature(bytez)
+        else:
+            generator = GenerateNovelFeature(bytez)
+
+        return generator.get_features()
 
     # 加载label字典
     def get_original_label(self):
