@@ -14,8 +14,7 @@ sys.path.append('../../novel_feature')
 
 import xgboost as xgb
 
-from tools.features.generate_novel import *
-from tools.features.generate_winner import *
+from state.state import FeatureExtract
 
 import os
 
@@ -28,6 +27,8 @@ NOVEL_MODEL = os.path.join(module_path, '../../../Dataset/models/novel_model.dat
 
 MODEL_NAME = WINNER_MODEL
 MODEL_CLASSIFIER = pickle.load(open(MODEL_NAME, "rb"))
+
+feature_extractor = FeatureExtract()
 
 # 获取文件二进制数据
 def fetch_file(sha256, test=False):
@@ -59,29 +60,14 @@ def get_available_sha256(test=False):
 # 获取分类器label
 def get_label_local(bytez):
     # 提取特征
-    if 'winner' in MODEL_NAME:
-        generator = GenerateWinnerFeature(bytez)
-    else:
-        generator = GenerateNovelFeature(bytez)
-
-    state = generator.get_features()
+    state = feature_extractor.get_state(bytez)
 
     dtest = xgb.DMatrix(state, missing=-999)
     pred_class = MODEL_CLASSIFIER.predict(dtest)
     label = list(pred_class[0]).index(max(pred_class[0]))
     # label要加1
     label += 1
-    return str(label), state
-
-
-# predict后直接可以调用，返回state
-def get_state(bytez):
-    if 'winner' in MODEL_NAME:
-        generator = GenerateWinnerFeature(bytez)
-    else:
-        generator = GenerateNovelFeature(bytez)
-
-    return generator.get_features()
+    return str(label)
 
 
 # 加载label字典
@@ -107,7 +93,7 @@ def draw(cm_name):
         original.append(label_map.get(file_name, 0))
 
         bytez = fetch_file(filepath)
-        label, _ = get_label_local(bytez)
+        label = get_label_local(bytez)
         predict.append(str(label))
     draw_cm(original, predict, cm_name)
 

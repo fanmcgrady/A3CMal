@@ -234,7 +234,7 @@ def main():
             # 创建字典存放测试后的{文件——>类别}对应关系
             success_dict = defaultdict(list)
             bytez = interface.fetch_file(sha256, test=True)
-            label, _ = interface.get_label_local(bytez)
+            label = interface.get_label_local(bytez)
             cm_dict_before[sha256] = label
             cm_dict_after[sha256] = label   # 先记录原始的，改成功后再更新
 
@@ -248,7 +248,7 @@ def main():
                 action_list.append(action)
                 success_dict[sha256].append(action)
                 bytez = manipulate.modify_without_breaking(bytez, action)
-                new_label, new_state = interface.get_label_local(bytez)
+                new_label = interface.get_label_local(bytez)
                 if new_label != env.label_map[sha256]:
                     # 如果改成功了，记录
                     cm_dict_after[sha256] = new_label
