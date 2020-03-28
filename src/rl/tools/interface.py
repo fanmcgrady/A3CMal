@@ -28,7 +28,7 @@ NOVEL_MODEL = os.path.join(module_path, '../../../Dataset/models/novel_model.dat
 MODEL_NAME = WINNER_MODEL
 MODEL_CLASSIFIER = pickle.load(open(MODEL_NAME, "rb"))
 
-feature_extractor = FeatureExtract()
+feature_extractor = FeatureExtract(MODEL_NAME)
 
 # 获取文件二进制数据
 def fetch_file(sha256, test=False):
