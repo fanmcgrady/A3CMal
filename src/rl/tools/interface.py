@@ -100,6 +100,6 @@ class Interface():
         draw_cm(original, predict, cm_name)
 
 
-if __name__ == '__main__':
-    interface = Interface()
-    interface.draw('train set')
+# if __name__ == '__main__':
+#     interface = Interface()
+#     interface.draw('train set')
