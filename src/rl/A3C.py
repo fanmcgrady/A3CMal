@@ -160,6 +160,7 @@ def main():
 
     opt = rmsprop_async.RMSpropAsync(
         lr=args.lr, eps=args.rmsprop_epsilon, alpha=0.99)
+    model.to_gpu(1)
     opt.setup(model)
     opt.add_hook(chainer.optimizer.GradientClipping(40))
     if args.weight_decay > 0:
