@@ -152,11 +152,11 @@ def main():
         agent = a3c.A3C(model, opt, t_max=args.t_max, gamma=0.99,
                         beta=args.beta)
 
-        return agent
+        return agent, env.maxturns
 
     # 开始训练
     def train_agent():
-        agent = create_a3c_agent()
+        agent, maxturns = create_a3c_agent()
 
         step_q_hook = PlotHook('Average Q Value (Step)', plot_index=0, xlabel='train step',
                                ylabel='Average Q Value (Step)')
@@ -175,7 +175,7 @@ def main():
             eval_interval=args.eval_interval,
             successful_score=8,
             global_step_hooks=[step_q_hook, step_loss_hook],
-            max_episode_len=env.maxturns)
+            max_episode_len=maxturns)
 
     # 获取保存的模型目录
     def get_latest_model_dir_from(basedir):
