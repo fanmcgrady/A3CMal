@@ -32,6 +32,7 @@ from env import sha256_holdout, MAXTURNS
 from action import action as manipulate
 from tools.interface import *
 from tools.hook.plot_hook import PlotHook
+import logging
 
 ACTION_LOOKUP = {i: act for i, act in enumerate(manipulate.ACTION_TABLE.keys())}
 
@@ -72,6 +73,8 @@ def main():
     parser.add_argument('--lr', type=float, default=7e-4)
     parser.add_argument('--monitor', action='store_true')
     args = parser.parse_args()
+
+    logging.basicConfig(level=logging.INFO)
 
     # Set a random seed used in ChainerRL.
     # If you use more than one processes, the results will be no longer
