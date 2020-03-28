@@ -1,6 +1,6 @@
 from tools.features.generate_novel import *
 from tools.features.generate_winner import *
-from interface import MODEL_NAME
+from tools.interface import MODEL_NAME
 
 class FeatureExtract():
     def __init__(self):
