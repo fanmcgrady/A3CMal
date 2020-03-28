@@ -14,7 +14,7 @@ sha256_train = interface.get_available_sha256()  #
 interface.test = True
 sha256_holdout = interface.get_available_sha256()  #
 
-MAXTURNS = 60
+MAXTURNS = 20
 
 register(
     id='malware-v0',
