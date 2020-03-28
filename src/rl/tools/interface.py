@@ -14,7 +14,12 @@ from reward.predict_file import *
 module_path = os.path.dirname(os.path.abspath(sys.modules[__name__].__file__))
 
 from tools.plot_cm import *
-from train_a3c import MODEL_NAME, MODEL_CLASSIFIER
+
+WINNER_MODEL = os.path.join(module_path, '../../Dataset/models/winner_model.dat')
+NOVEL_MODEL = os.path.join(module_path, '../../Dataset/models/novel_model.dat')
+
+MODEL_NAME = WINNER_MODEL
+MODEL_CLASSIFIER = pickle.load(open(MODEL_NAME, "rb"))
 
 class Interface():
     def __init__(self, test=False):
