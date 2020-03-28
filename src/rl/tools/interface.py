@@ -56,14 +56,17 @@ def get_available_sha256(test=False):
     assert len(sha256list) > 0, "no files found in {} with sha256 names".format(root)
     return sha256list
 
-
+import threading
+lock = threading.Lock()
 # 获取分类器label
 def get_label_local(bytez):
     # 提取特征
     state = feature_extractor.get_state(bytez)
 
     dtest = xgb.DMatrix(state, missing=-999)
+    lock.acquire()
     pred_class = MODEL_CLASSIFIER.predict(dtest)
+    lock.release()
     label = list(pred_class[0]).index(max(pred_class[0]))
     # label要加1
     label += 1
