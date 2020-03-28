@@ -5,6 +5,8 @@ import linecache
 import sys
 
 # add rl
+import time
+
 sys.path.append('.')
 # add winner
 sys.path.append('../kaggle_Microsoft_malware_full/')
