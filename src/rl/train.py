@@ -40,7 +40,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--outdir', type=str, default='models')
     parser.add_argument('--test', action='store_true')
-    parser.add_argument('--gpu', action='store_true')
+    parser.add_argument('--gpu', action='store_false')
     parser.add_argument('--final-exploration-steps', type=int, default=10 ** 4)
     parser.add_argument('--start-epsilon', type=float, default=1.0)
     parser.add_argument('--end-epsilon', type=float, default=0.1)
@@ -58,7 +58,7 @@ def main():
     parser.add_argument('--gamma', type=float, default=0.99)
     parser.add_argument('--minibatch-size', type=int, default=None)
     parser.add_argument('--test-random', action='store_true')
-    parser.add_argument('--rounds', type=int, default=2)
+    parser.add_argument('--rounds', type=int, default=1)
     args = parser.parse_args()
 
     # q函数
