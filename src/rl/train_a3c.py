@@ -20,6 +20,7 @@ import gym
 from chainer import optimizers
 from chainerrl import experiments, explorers, misc, links
 from chainerrl.replay_buffers import *
+from tools import interface
 
 from chainerrl.agents import a3c
 from chainerrl.optimizers.nonbias_weight_decay import NonbiasWeightDecay
@@ -200,7 +201,7 @@ def main():
         for i, sha256 in enumerate(sha256_holdout):
             # 创建字典存放测试后的{文件——>类别}对应关系
             success_dict = defaultdict(list)
-            bytez = interface.fetch_file(sha256)
+            bytez = interface.fetch_file(sha256, test=True)
             label, _ = interface.get_label_local(bytez)
             cm_dict_before[sha256] = label
             cm_dict_after[sha256] = label   # 先记录原始的，改成功后再更新
@@ -228,8 +229,6 @@ def main():
         interface.draw_after_train(cm_dict_before, cm_dict_after, cm_name)
 
         return success, misclassified  # evasion accuracy is len(success) / len(sha256_holdout)
-
-    interface = Interface(args.test)
 
     if not args.test:
         print("training...")
