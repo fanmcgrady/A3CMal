@@ -44,7 +44,15 @@ net_layers = [256, 64]
 # (new) ➜  ~ python -m visdom.server -p 8888
 # 2、运行train
 # python train.py
+module_path = os.path.dirname(os.path.abspath(sys.modules[__name__].__file__))
+WINNER_MODEL = os.path.join(module_path, '../../Dataset/models/winner_model.dat')
+NOVEL_MODEL = os.path.join(module_path, '../../Dataset/models/novel_model.dat')
+
+MODEL_NAME = WINNER_MODEL
+MODEL_CLASSIFIER = pickle.load(open(MODEL_NAME, "rb"))
+
 def main():
+
     parser = argparse.ArgumentParser()
     parser.add_argument('--processes', type=int, default=8)
     parser.add_argument('--arch', type=str, default='FFSoftmax',

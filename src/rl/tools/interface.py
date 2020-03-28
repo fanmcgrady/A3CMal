@@ -13,17 +13,13 @@ sys.path.append('../../novel_feature')
 from reward.predict_file import *
 module_path = os.path.dirname(os.path.abspath(sys.modules[__name__].__file__))
 
-WINNER_MODEL = os.path.join(module_path, '../../../Dataset/models/winner_model.dat')
-NOVEL_MODEL = os.path.join(module_path, '../../../Dataset/models/novel_model.dat')
-
 from tools.plot_cm import *
+from train_a3c import MODEL_NAME, MODEL_CLASSIFIER
 
 class Interface():
     def __init__(self, test=False):
-        self.model = WINNER_MODEL
-        # self.model = NOVEL_MODEL
         self.test = test
-        self.predict = Predict(self.model)
+        self.predict = Predict(MODEL_NAME, MODEL_CLASSIFIER)
 
     # 获取文件二进制数据
     def fetch_file(self, sha256):

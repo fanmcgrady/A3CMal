@@ -11,11 +11,11 @@ from tools.features.generate_winner import *
 
 
 class Predict():
-    def __init__(self, model):
-        self.model = model
+    def __init__(self, model_name, classifier):
+        self.model = model_name
         self.state = None
         # 载入模型，xgboost对象
-        self.classifier = pickle.load(open(self.model, "rb"))
+        self.classifier = classifier
 
     def predict(self, bytez):
         # 提取特征
