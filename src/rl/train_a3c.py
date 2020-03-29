@@ -183,7 +183,7 @@ def main():
             eval_n_steps=args.eval_n_runs,
             eval_n_episodes=None,
             eval_interval=args.eval_interval,
-            successful_score=8,
+            successful_score=9,
             global_step_hooks=[step_q_hook, step_loss_hook],
             max_episode_len=MAXTURNS)
 
@@ -270,7 +270,7 @@ def main():
 
             with open(os.path.join(args.outdir, 'scores.txt'), 'r') as f:
                 lines = f.readlines()
-                last = lines[-3]
+                last = lines[-1]
                 elements = last.strip('\n').split('\t')
                 step = elements[0]
                 success_score = elements[3]
