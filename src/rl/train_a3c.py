@@ -77,6 +77,7 @@ def main():
     parser.add_argument('--render', action='store_true', default=False)
     parser.add_argument('--lr', type=float, default=7e-4)
     parser.add_argument('--monitor', action='store_true')
+    parser.add_argument('--description', type=str, default='')
     args = parser.parse_args()
 
     logging.basicConfig(level=logging.INFO)

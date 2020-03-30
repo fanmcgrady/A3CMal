@@ -82,7 +82,7 @@ def get_original_label():
 
 # 绘制cm
 def draw(cm_name):
-    file_list = get_available_sha256()
+    file_list = get_available_sha256(test=True)
     label_map = get_original_label()
 
     original = []
@@ -91,9 +91,11 @@ def draw(cm_name):
         file_name = os.path.split(filepath)[-1]
         original.append(label_map.get(file_name, 0))
 
-        bytez = fetch_file(filepath)
+        bytez = fetch_file(filepath, test=True)
         label = get_label_local(bytez)
         predict.append(str(label))
+    print('original = {}'.format(original))
+    print('predict = {}'.format(predict))
     draw_cm(original, predict, cm_name)
 
 
@@ -109,5 +111,4 @@ def draw_after_train(before, after, cm_name):
     draw_cm(original, predict, cm_name)
 
 # if __name__ == '__main__':
-#     interface = Interface()
-#     interface.draw('train set')
+#     draw('train set')

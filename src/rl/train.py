@@ -62,6 +62,7 @@ def main():
     parser.add_argument('--minibatch-size', type=int, default=None)
     parser.add_argument('--test-random', action='store_true')
     parser.add_argument('--rounds', type=int, default=1)
+    parser.add_argument('--description', type=str, default='')
     args = parser.parse_args()
 
     # q函数
