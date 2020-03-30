@@ -4,6 +4,8 @@ import pickle
 import sys
 
 # add rl
+import time
+
 from tqdm import tqdm
 
 sys.path.append('../../')
@@ -106,9 +108,13 @@ def draw_after_train(before, after, cm_name):
         original.append(before.get(key))
         predict.append(after.get(key))
 
-    print('original:{}'.format(original))
-    print('predict:{}'.format(predict))
-    draw_cm(original, predict, cm_name)
+    with open(os.path.join(module_path, 'cm.txt'), 'a+') as f:
+        f.write('original = {}'.format(original))
+        f.write('predict = {}'.format(predict))
+        f.write(time.time())
+
+    # 服务器上不要画图
+    # draw_cm(original, predict, cm_name)
 
 # if __name__ == '__main__':
 #     draw('train set')
