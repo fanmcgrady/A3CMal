@@ -206,7 +206,7 @@ def main():
             eval_n_episodes=None,
             outdir=args.outdir,  # Save everything to 'result' directory
             step_hooks=[step_q_hook, step_loss_hook],
-            successful_score=8,
+            successful_score=8.5,
             eval_env=test_env
         )
 
