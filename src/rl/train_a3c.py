@@ -309,7 +309,7 @@ def main():
         def agent_policy(agent):
             def f(bytez):
                 # first, get features from bytez
-                feats = interface.get_state(bytez)
+                feats = interface.feature_extractor.get_state(bytez)
                 action_index = agent.act(feats)
                 return ACTION_LOOKUP[action_index]
 
@@ -317,7 +317,7 @@ def main():
 
         # ddqn
 
-        agent = create_a3c_agent(env, args)
+        agent = create_a3c_agent()
         mm = get_latest_model_dir_from(model_fold)
         agent.load(mm)
         success, _ = evaluate(agent_policy(agent), 'test')
