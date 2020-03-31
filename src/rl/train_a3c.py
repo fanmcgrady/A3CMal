@@ -292,8 +292,6 @@ def main():
         model_fold = os.path.join(args.outdir, args.load)
         scores_file = os.path.join(model_fold, 'scores.txt')
 
-        env = gym.make('malware-test-v0')
-
         # baseline: choose actions at random
         if args.test_random:
             random_action = lambda bytez: np.random.choice(list(manipulate.ACTION_TABLE.keys()))
@@ -310,7 +308,9 @@ def main():
             def f(bytez):
                 # first, get features from bytez
                 feats = interface.feature_extractor.get_state(bytez)
-                action_index = agent.act(feats)
+                # CastObservationToFloat32
+                action_index = agent.act(feats.astype(np.float32, copy=False))
+                # action_index = agent.act(feats)
                 return ACTION_LOOKUP[action_index]
 
             return f
@@ -320,11 +320,13 @@ def main():
         agent = create_a3c_agent()
         mm = get_latest_model_dir_from(model_fold)
         agent.load(mm)
+
+        env = make_env(0, True)
+
         success, _ = evaluate(agent_policy(agent), 'test')
         blackbox_result = "black: {}({}/{})".format(len(success) / total, len(success), total)
         with open(scores_file, 'a') as f:
             f.write("{}->{}\n".format(mm, blackbox_result))
-
 
 if __name__ == '__main__':
     main()
