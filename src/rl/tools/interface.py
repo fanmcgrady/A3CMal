@@ -111,7 +111,7 @@ def draw_after_train(before, after, cm_name):
     with open(os.path.join(module_path, 'cm.txt'), 'a+') as f:
         f.write('original = {}'.format(original))
         f.write('predict = {}'.format(predict))
-        f.write(time.time())
+        f.write('time = {}'.format(time.time()))
 
     # 服务器上不要画图
     # draw_cm(original, predict, cm_name)
