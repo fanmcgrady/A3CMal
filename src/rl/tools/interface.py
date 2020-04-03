@@ -27,7 +27,7 @@ from tools.plot_cm import *
 WINNER_MODEL = os.path.join(module_path, '../../../Dataset/models/winner_model.dat')
 NOVEL_MODEL = os.path.join(module_path, '../../../Dataset/models/novel_model.dat')
 
-MODEL_NAME = WINNER_MODEL
+MODEL_NAME = NOVEL_MODEL
 MODEL_CLASSIFIER = pickle.load(open(MODEL_NAME, "rb"))
 
 feature_extractor = FeatureExtract(MODEL_NAME)
