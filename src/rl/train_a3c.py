@@ -184,7 +184,7 @@ def main():
             eval_n_steps=args.eval_n_runs,
             eval_n_episodes=None,
             eval_interval=args.eval_interval,
-            successful_score=8.5,
+            successful_score=8,
             global_step_hooks=[step_q_hook, step_loss_hook],
             max_episode_len=MAXTURNS)
 
