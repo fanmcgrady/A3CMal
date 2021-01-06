@@ -43,7 +43,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--outdir', type=str, default='models')
     parser.add_argument('--test', action='store_true')
-    parser.add_argument('--gpu', action='store_false')
+    parser.add_argument('--gpu', action='store_true')
     parser.add_argument('--final-exploration-steps', type=int, default=10 ** 4)
     parser.add_argument('--start-epsilon', type=float, default=1.0)
     parser.add_argument('--end-epsilon', type=float, default=0.1)

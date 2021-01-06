@@ -51,7 +51,6 @@ ACTION_TABLE = {
 class MalwareManipulator(object):
     def __init__(self, bytez):
         self.bytez = bytez
-
         self.min_append_log2 = 5
         self.max_append_log2 = 8
 

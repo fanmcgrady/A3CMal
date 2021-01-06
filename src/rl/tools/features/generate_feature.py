@@ -1,8 +1,12 @@
+import os
+
+
 class GenerateFeature():
     def __init__(self, bytez):
         # pe 文件名
         self.bytez = bytez
         self.bytes_list = []
+        # self.file_name = os.getpid()
         self.file_name = 'tmp.bytes'
 
         self.generate_bytes()
