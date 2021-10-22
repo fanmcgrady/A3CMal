@@ -3,8 +3,8 @@ from aliyunsdkcore.request import CommonRequest
 
 class Message:
     def __init__(self):
-        key = 'LTAI4Fkewc4q3R1F2BXC91PS'
-        secret = 'TYk8B0KGFN7ZrNmdJynDLxRelHx6Jf'
+        key = ''
+        secret = ''
 
         self.client = AcsClient(key, secret, 'cn-hangzhou')
 
@@ -12,10 +12,10 @@ class Message:
         # 模版内容:
         # ${experment}的实验结果为：${result}
         contents = "{" + "'experment': '{}', 'result': '{}'".format(experment, result) + "}"
-        # 方老师 = 13550345266
-        # 耿大宝 = 18883992660
-        self.__sendTo('13550345266', contents)
-        self.__sendTo('18883992660', contents)
+        # 方老师 = 
+        # 耿大宝 = 
+        self.__sendTo('', contents)
+        self.__sendTo('', contents)
 
     def __sendTo(self, phone, contents):
         request = CommonRequest()
