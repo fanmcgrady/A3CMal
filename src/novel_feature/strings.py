@@ -2,7 +2,7 @@ import os
 
 import hickle
 import numpy as np
-from numba.decorators import jit
+from numba import jit
 
 
 def binary_search(a, x):

@@ -7,14 +7,14 @@ import sys
 import numpy as np
 
 # 添加malpatch路径以导入MalConv
-sys.path.insert(0, '/home/baixb/paper/malpatch/old_model')
+sys.path.insert(0, 'models/old_model')
 
 # 创建简化版的MalConv包装，去掉secml依赖
 from keras.models import load_model
 from keras.optimizers import SGD
 from keras import metrics
 
-MODULE_PATH = '/home/baixb/paper/malpatch/old_model'
+MODULE_PATH = 'models/old_model'
 MODEL_PATH = os.path.join(MODULE_PATH, 'malconv.h5')
 
 

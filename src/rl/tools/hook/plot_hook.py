@@ -39,13 +39,14 @@ class PlotHook(StepHook):
 
         self.plot_index = plot_index
         self.episode_step = 0
-        self.vis = visdom.Visdom(port=8080)
-        assert self.vis.check_connection(), "Fail to connect to Visdom backend!"
+        self.vis = None  # visdom.Visdom(port=8080)
+        # assert self.vis.check_connection(), "Fail to connect to Visdom backend!"
 
     def plot(self, step: int, sig: dict):
         '''Iterative plot
         example: ss.plot(i, dict(a=i*i, b=51-3*i))
         '''
+        return  # 禁用Visdom绘图
         X = np.array([[step] * len(sig.keys())])
         Y = np.array([[sig[k] for k in sig.keys()]])
         self.opts['legend'] = list(sig.keys())

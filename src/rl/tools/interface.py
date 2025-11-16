@@ -34,7 +34,7 @@ feature_extractor = FeatureExtract(MODEL_NAME)
 
 # 获取文件二进制数据
 def fetch_file(sha256, test=False):
-    root = 'test' if test else 'train'
+    root = 'test_malconv' if test else 'train_malconv'
     root = os.path.join(module_path, '../../../Dataset/pe/' + root)
 
     location = os.path.join(root, sha256)
@@ -49,7 +49,7 @@ def fetch_file(sha256, test=False):
 
 # 在samples目录中读取样本，放入list返回
 def get_available_sha256(test=False):
-    root = 'test' if test else 'train'
+    root = 'test_malconv' if test else 'train_malconv'
     root = os.path.join(module_path, '../../../Dataset/pe/' + root)
     sha256list = []
     for fp in glob.glob(os.path.join(root, '*')):
